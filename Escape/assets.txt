@@ -1,0 +1,9 @@
+Texture TexPlayer ./assets/player.png
+Texture TexGround ./assets/ground.png
+Texture TexExit   ./assets/exit.png
+Texture TexLeaf   ./assets/leaf.png
+Texture	TexGrass  ./assets/grass.png
+Texture	TexWallBottom ./assets/wall-bottom-full.png
+Texture TexWallRight  ./assets/wall-right-full.png
+Texture TexWallTop    ./assets/wall-top-full.png
+Texture TexWallLeft   ./assets/wall-left-full.png
