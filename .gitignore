@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Escape.sln
+/.vs/Escape
+/Escape/x64/Debug
+/x64/Debug

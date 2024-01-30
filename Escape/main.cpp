@@ -17,3 +17,10 @@ int main(int argc, char* args[])
 
 	return 0;
 }
+
+// TODO
+// 1. add timer
+// 2. improve blowing feature (should be progressive) and improve physics (should be fun, leaves should bounce around)
+// 3. add assets (yard, house, then player, leaves and leaf blower)
+// 4. add menu
+// 5. add sounds

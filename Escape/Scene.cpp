@@ -67,7 +67,7 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	}
 
 	// TODO: not sure if this should be an entity?
-	auto entity = std::make_shared<Playable>("Blower", "", Vec2(0, 0), Vec2(1, m_player->m_size.y * 2));
+	auto entity = std::make_shared<Playable>("Blower", "", Vec2(m_player->m_position.x + m_player->m_half.x, m_player->m_position.y + m_player->m_half.y - m_player->m_size.y), Vec2(1, m_player->m_size.y * 2));
 	m_blower = m_entityManager.addEntity(entity);
 	generateLeaves();
 	m_entityManager.update();
@@ -181,10 +181,36 @@ void Scene::handleTransform()
 	if (m_player->m_up)
 	{
 		position.y -= velocity.y;
+		m_blower->m_position.y = m_player->m_position.y + m_player->m_half.y - m_player->m_size.y;
 	}
 	else if (m_player->m_down)
 	{
 		position.y += velocity.y;
+		m_blower->m_position.y = m_player->m_position.y + m_player->m_half.y - m_player->m_size.y;
+	}	
+
+	// TODO: we may want the blower to be the entity and the spread to be a property of that entity. something to think about.
+	// TODO: use const values
+	// TODO: to be refactored
+	const int maxRange = 100;
+
+	if (m_player->m_direction == "right" || m_player->m_right)
+	{
+		m_blower->m_position.x += 1;
+
+		if (m_blower->m_position.x - (m_player->m_position.x + m_player->m_size.x) >= maxRange)
+		{
+			m_blower->m_position.x = m_player->m_position.x + m_player->m_half.x;
+		}
+	}
+	else if (m_player->m_direction == "left" || m_player->m_left)
+	{
+		m_blower->m_position.x -= 1;
+
+		if (m_player->m_position.x - m_blower->m_position.x >= maxRange)
+		{
+			m_blower->m_position.x = m_player->m_position.x + m_player->m_half.x;
+		}
 	}
 }
 
@@ -194,7 +220,7 @@ void Scene::handleCollision()
 	for (auto entity : m_entityManager.getEntities())
 	{
 		// TODO: add a collidable property or create a sub class
-		if (entity->tag() == "Player" || entity->tag() == "Leaf" || entity->tag() == "")
+		if (entity->tag() == "Player" || entity->tag() == "Leaf" || entity->tag() == "Blower" || entity->tag() == "")
 		{
 			continue;
 		}
@@ -204,26 +230,6 @@ void Scene::handleCollision()
 			short int collisionDirection = m_physics.resolveOverlap(m_player, entity);
 		}
 	}
-
-	//if (m_player->m_direction == "up" || m_player->m_direction == "down")
-	//{
-	//	return;
-	//}
-
-	// TODO: we may want the blower to be the entity and the spread to be a property of that entity. something to think about.
-	// TODO: use const values
-
-	if (m_player->m_direction == "right")
-	{
-		m_blower->m_position.x = m_player->m_position.x + (m_player->m_size.x + 40) - (m_blower->m_size.x / 2);
-	}
-	else if (m_player->m_direction == "left")
-	{
-		m_blower->m_position.x = m_player->m_position.x - 40 - (m_blower->m_size.x / 2);
-	}
-	
-	m_blower->m_position.y = m_player->m_position.y + (m_player->m_size.y / 2) - (m_blower->m_size.y / 2);
-
 
 	for (auto entity : m_entityManager.getEntities("Leaf"))
 	{
