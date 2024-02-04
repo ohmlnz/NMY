@@ -46,13 +46,14 @@ void EntityManager::removeEntities()
 			m_entitiesMap[key.first].end()
 		);
 	}
-}
+};
+
 SDL_Point EntityManager::getTextureSize(SDL_Texture* texture)
 {
 	SDL_Point size;
 	SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
 	return size;
-}
+};
 
 std::shared_ptr<Entity> EntityManager::addEntity(std::shared_ptr<Entity> entity)
 {

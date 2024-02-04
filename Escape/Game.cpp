@@ -6,7 +6,7 @@ void Game::init(int width, int height, const std::string& assetsPath, const std:
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-		return;
+		exit(1);
 	}
 
 	m_window = SDL_CreateWindow("Not On My Yard!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
@@ -14,7 +14,7 @@ void Game::init(int width, int height, const std::string& assetsPath, const std:
 	if (m_window == NULL)
 	{
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-		return;
+		exit(1);
 	}
 
 
@@ -46,6 +46,8 @@ void Game::process()
 			case SDL_QUIT:
 				quit();
 				break;
+			default:
+				break;
 		}
 
 		m_scene->handleEvents(m_event);
@@ -59,7 +61,7 @@ void Game::update()
 
 void Game::render()
 {
-	SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 0);
+	SDL_SetRenderDrawColor(m_renderer, 135, 159, 41, 255);
 	SDL_RenderClear(m_renderer);
 	m_scene->render();
 	SDL_RenderPresent(m_renderer);

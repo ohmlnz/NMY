@@ -9,6 +9,8 @@
 #include "Window.h"
 #include "Debug.h"
 #include "Assets.h"
+#include "Utils.h"
+#include "Math.h"
 
 class Scene
 {
@@ -22,6 +24,8 @@ private:
 	Window											m_window;
 	Debug											m_debug;
 	Assets											m_assets;
+	Utils											m_utils;
+	Math											m_math;
 	bool											m_debugMode = false;
 	int												m_score		= 0;
 	bool											m_gameover  = false;

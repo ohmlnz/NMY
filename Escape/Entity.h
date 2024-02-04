@@ -45,7 +45,7 @@ public:
 	Playable(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size) : 
 		Entity(tag, texture, position, size) {}
 	// TODO: initialize at creation
-	Vec2 m_velocity = { 0.1, 0.1 };
+	Vec2 m_velocity = { 0.2, 0.2 };
 	int  m_cooldown = 1;
 
 	// state

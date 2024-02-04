@@ -68,6 +68,9 @@
     <ClInclude Include="Assets.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

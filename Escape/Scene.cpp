@@ -1,7 +1,8 @@
 #include "Scene.h"
 #include "Game.h"
 
-const int MAX_LEAVES = 2;
+// use regular pointers if needed to increment nb of leaves to get perf boost
+const int MAX_LEAVES = 100;
 const int MIN_LEAVES = MAX_LEAVES / 2;
 
 void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPath)
@@ -50,7 +51,7 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 		// not sure if best way to manage initialization of structs, might wanna look into improving that
 		if (type == "Player")
 		{
-			auto entity = std::make_shared<Playable>(type, levelTexture, Vec2(posX, posY), Vec2(16, 16));
+			auto entity = std::make_shared<Playable>(type, levelTexture, Vec2(posX, posY), Vec2(32, 32));
 			m_entityManager.addEntity(entity);
 			m_player = entity;
 		}
@@ -76,16 +77,15 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 
 void Scene::generateLeaves()
 {
-	srand(time(NULL));
-	const int minLeafs = 20;
-	// TODO: turn rand into util func: rand() % (max - min + 1) + min
-	int totalLeaves = rand() % (MAX_LEAVES - MIN_LEAVES + 1) + MIN_LEAVES;
+	int totalLeaves = m_utils.random(MIN_LEAVES, MAX_LEAVES);
 	
 	for (int i = 0; i < totalLeaves; i++)
 	{
-		int randomX = rand() % (m_window.SCREEN_WIDTH - 0 + 1) + 0;
-		int randomY = rand() % ((m_window.SCREEN_HEIGHT - m_window.BLOCK_SIZE - 10) - m_window.BLOCK_SIZE + 1) + m_window.BLOCK_SIZE;
-		auto entity = std::make_shared<Obstacle>("Leaf", "TexLeaf", Vec2(randomX, randomY), Vec2(10, 10));
+		int randomX = m_utils.random(0, m_window.SCREEN_WIDTH);
+		int randomY = m_utils.random(m_window.BLOCK_SIZE, (m_window.SCREEN_HEIGHT - m_window.BLOCK_SIZE - 10));
+		int leafIndex = m_utils.random(1, 4);
+		std::string textureName = "TexLeaf" + std::to_string(leafIndex);
+		auto entity = std::make_shared<Obstacle>("Leaf", textureName, Vec2(randomX, randomY), Vec2(32, 32));
 		m_entityManager.addEntity(entity);
 	}	
 }
