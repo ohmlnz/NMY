@@ -27,8 +27,8 @@ Texture TexGrasPatch8 ./assets/grass-patch-8.png
 Texture TexGrasPatch9 ./assets/grass-patch-9.png
 Texture TexHouse ./assets/house.png
 Texture TexLamp ./assets/lamp.png
-Texture TexMushroom1 ./assets/muschroom-1.png
-Texture TexMushroom2 ./assets/muschroom-2.png
+Texture TexMushroom1 ./assets/mushroom-1.png
+Texture TexMushroom2 ./assets/mushroom-2.png
 Texture TexRock1 ./assets/rock-1.png
 Texture TexRock2 ./assets/rock-2.png
 Texture TexRock3 ./assets/rock-3.png
