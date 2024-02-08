@@ -13,6 +13,7 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	
 	// TODO: use struct
 	std::string category, assetsTexture, assetPath;
+	int boundingX, boundingY;
 
 	// TODO: use an asset manager to handle all that crap
 	if (!assetsFile)
@@ -22,10 +23,10 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 
 	while (assetsFile >> category)
 	{
-		assetsFile >> assetsTexture >> assetPath;
+		assetsFile >> assetsTexture >> assetPath >> boundingX >> boundingY;
 		// TODO: add proper error handling - missing textures are not logged 
 		SDL_Texture* texture = IMG_LoadTexture(m_gameEngine->currentRenderer(), assetPath.c_str());
-		m_textures[assetsTexture] = texture;
+		m_textures[assetsTexture] = TextureData{ texture, Vec2(boundingX, boundingY) };
 		std::cout << "The following texture has been loaded: " << assetsTexture << std::endl;
 	}
 
@@ -44,7 +45,9 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	while (levelFile >> type)
 	{
 		levelFile >> levelTexture >> posX >> posY;
-		SDL_Point size = m_entityManager.getTextureSize(m_textures[levelTexture]);
+
+		SDL_Point size = m_entityManager.getTextureSize(m_textures[levelTexture].texture);
+		Vec2 boundingBox = m_textures[levelTexture].boundingBox;
 
 		posX *= m_window.BLOCK_SIZE;
 		posY *= m_window.BLOCK_SIZE;
@@ -52,18 +55,18 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 		// not sure if best way to manage initialization of structs, might wanna look into improving that
 		if (type == "Player")
 		{
-			auto entity = std::make_shared<Playable>(type, levelTexture, Vec2(posX, posY), Vec2(32, 32));
+			auto entity = std::make_shared<Playable>(type, levelTexture, Vec2(posX, posY), Vec2(32, 32), Vec2(32, 32));
 			m_entityManager.addEntity(entity);
 			m_player = entity;
 		}
 		else if (type == "Obstacle")
 		{
-			auto entity = std::make_shared<Obstacle>(type, levelTexture, Vec2(posX, posY), Vec2(float(size.x), float(size.y)));
+			auto entity = std::make_shared<Obstacle>(type, levelTexture, Vec2(posX, posY), Vec2(float(size.x), float(size.y)), boundingBox);
 			m_entityManager.addEntity(entity);
 		}
 		else
 		{
-			auto entity = std::make_shared<Decoration>(type, levelTexture, Vec2(posX, posY), Vec2(float(size.x), float(size.y)));
+			auto entity = std::make_shared<Decoration>(type, levelTexture, Vec2(posX, posY), Vec2(float(size.x), float(size.y)), boundingBox);
 			m_entityManager.addEntity(entity);
 		}
 	}
@@ -86,7 +89,7 @@ void Scene::generateLeaves()
 		int randomY = m_utils.random(m_window.BLOCK_SIZE, (m_window.SCREEN_HEIGHT - m_window.BLOCK_SIZE - 10));
 		int leafIndex = m_utils.random(1, 4);
 		std::string textureName = "TexLeaf" + std::to_string(leafIndex);
-		auto entity = std::make_shared<Obstacle>("Leaf", textureName, Vec2(randomX, randomY), Vec2(32, 32));
+		auto entity = std::make_shared<Obstacle>("Leaf", textureName, Vec2(randomX, randomY), Vec2(32, 32), Vec2(32, 32));
 		m_entityManager.addEntity(entity);
 	}	
 }
@@ -221,7 +224,7 @@ void Scene::handleCollision()
 	for (auto entity : m_entityManager.getEntities())
 	{
 		// TODO: add a collidable property or create a sub class
-		if (entity->tag() == "Player" || entity->tag() == "Blower" || entity->tag() == "Decoration")
+		if (entity->tag() == "Player" || entity->tag() == "Blower" || entity->tag() == "Decoration" || entity->m_boundingBox.x == 0 && entity->m_boundingBox.y == 0)
 		{
 			continue;
 		}
@@ -272,7 +275,7 @@ void Scene::render()
 		SDL_Rect entityRect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
 		SDL_RenderCopyEx(
 			m_gameEngine->currentRenderer(),
-			m_textures[entity->texture()],
+			m_textures[entity->texture()].texture,
 			NULL,
 			&entityRect,
 			entity->m_angle,

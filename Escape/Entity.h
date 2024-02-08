@@ -13,12 +13,13 @@ private:
 	std::string		m_texture;
 
 public:
-	Entity(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size)
+	Entity(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox)
 		: m_tag(tag)
 		, m_texture(texture)
 		, m_position(position)
 		, m_size(size)
 		, m_half(size.x / 2, size.y / 2)
+		, m_boundingBox(boundingBox)
 	{}
 	void destroy() { m_active = false; }
 	bool isActive() { return m_active; }
@@ -30,20 +31,23 @@ public:
 
 	// transform
 	Vec2 m_position = { 0, 0 };
+	Vec2 m_previousPosition = { 0, 0 };
 	Vec2 m_scale = { 1, 1 };
 	Vec2 m_overlap = { 0, 0 };
-	Vec2 m_previousPosition = { 0, 0 };
+	Vec2 m_previousOverlap = { 0, 0 };
 
-	// bounding box
 	Vec2 m_size = { 0, 0 };
 	Vec2 m_half = { 0, 0 };
+
+	// bounding box
+	Vec2 m_boundingBox = { 0, 0 };
 };
 
 struct Playable : public Entity
 {
 public:
-	Playable(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size) : 
-		Entity(tag, texture, position, size) {}
+	Playable(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox) :
+		Entity(tag, texture, position, size, boundingBox) {}
 	// TODO: initialize at creation
 	Vec2 m_velocity = { 0.2, 0.2 };
 	int  m_cooldown = 1;
@@ -69,13 +73,13 @@ public:
 struct Obstacle : public Entity
 {
 public:
-	Obstacle(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size) :
-		Entity(tag, texture, position, size) {}
+	Obstacle(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox) :
+		Entity(tag, texture, position, size, boundingBox) {}
 };
 
 struct Decoration : public Entity
 {
 public:
-	Decoration(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size) :
-		Entity(tag, texture, position, size) {}
+	Decoration(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox) :
+		Entity(tag, texture, position, size, boundingBox) {}
 };

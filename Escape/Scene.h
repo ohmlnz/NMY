@@ -16,7 +16,7 @@ class Scene
 {
 private:
 	class Game* m_gameEngine = nullptr;
-	std::map<std::string, SDL_Texture*> m_textures;
+	std::map<std::string, TextureData> m_textures;
 	EntityManager m_entityManager;
 	std::shared_ptr<Playable>						m_player;
 	std::shared_ptr<Entity>							m_blower;

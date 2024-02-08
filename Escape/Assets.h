@@ -1,6 +1,11 @@
 #pragma once
 #include <SDL_ttf.h>
 
+struct TextureData
+{
+	SDL_Texture* texture;
+	Vec2 boundingBox;
+};
 
 class Assets
 {

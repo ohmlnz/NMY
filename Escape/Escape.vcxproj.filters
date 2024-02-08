@@ -74,6 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />
+    <Text Include="level.txt" />
+    <Text Include="assets.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="player.png">
@@ -85,5 +87,162 @@
     <Image Include="exit.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\dirt-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\dirt-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\dirt-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\dirt-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\dirt-bump.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\fence-side.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\fence-top.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\flower-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\flower-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\flower-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\flower-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\flower-5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\flower-6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\grass-patch-9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\house.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\lamp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\leaf-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\leaf-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\leaf-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\leaf-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\mushroom-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\mushroom-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\rock-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\rock-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\rock-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\rock-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\sign.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\stump.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail-9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\tree-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\tree-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\tree-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\weed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL2_ttf.dll" />
+    <None Include="assets\map.aseprite" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="arial.ttf" />
   </ItemGroup>
 </Project>

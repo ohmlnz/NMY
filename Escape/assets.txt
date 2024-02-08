@@ -1,50 +1,50 @@
-Texture TexPlayer ./assets/player.png
-Texture TexLeaf1 ./assets/leaf-1.png
-Texture TexLeaf2 ./assets/leaf-2.png
-Texture TexLeaf3 ./assets/leaf-3.png
-Texture TexLeaf4 ./assets/leaf-4.png
-Texture TexDirt1 ./assets/dirt-1.png
-Texture TexDirt2 ./assets/dirt-2.png
-Texture TexDirt3 ./assets/dirt-3.png
-Texture TexDirt4 ./assets/dirt-4.png
-Texture TexDirtBump ./assets/dirt-bump.png
-Texture TexFenceSide ./assets/fence-side.png
-Texture TexFenceTop ./assets/fence-top.png
-Texture TexFlower1 ./assets/flower-1.png
-Texture TexFlower2 ./assets/flower-2.png
-Texture TexFlower3 ./assets/flower-3.png
-Texture TexFlower4 ./assets/flower-4.png
-Texture TexFlower5 ./assets/flower-5.png
-Texture TexFlower6 ./assets/flower-6.png
-Texture TexGrasPatch1 ./assets/grass-patch-1.png
-Texture TexGrasPatch2 ./assets/grass-patch-2.png
-Texture TexGrasPatch3 ./assets/grass-patch-3.png
-Texture TexGrasPatch4 ./assets/grass-patch-4.png
-Texture TexGrasPatch5 ./assets/grass-patch-5.png
-Texture TexGrasPatch6 ./assets/grass-patch-6.png
-Texture TexGrasPatch7 ./assets/grass-patch-7.png
-Texture TexGrasPatch8 ./assets/grass-patch-8.png
-Texture TexGrasPatch9 ./assets/grass-patch-9.png
-Texture TexHouse ./assets/house.png
-Texture TexLamp ./assets/lamp.png
-Texture TexMushroom1 ./assets/mushroom-1.png
-Texture TexMushroom2 ./assets/mushroom-2.png
-Texture TexRock1 ./assets/rock-1.png
-Texture TexRock2 ./assets/rock-2.png
-Texture TexRock3 ./assets/rock-3.png
-Texture TexRock4 ./assets/rock-4.png
-Texture TexSign ./assets/sign.png
-Texture TexStump ./assets/stump.png
-Texture TexTrail1 ./assets/trail-1.png
-Texture TexTrail2 ./assets/trail-2.png
-Texture TexTrail3 ./assets/trail-3.png
-Texture TexTrail4 ./assets/trail-4.png
-Texture TexTrail5 ./assets/trail-5.png
-Texture TexTrail6 ./assets/trail-6.png
-Texture TexTrail7 ./assets/trail-7.png
-Texture TexTrail8 ./assets/trail-8.png
-Texture TexTrail9 ./assets/trail-9.png
-Texture TexTree1 ./assets/tree-1.png
-Texture TexTree2 ./assets/tree-2.png
-Texture TexTree3 ./assets/tree-3.png
-Texture TexWeed ./assets/weed.png
+Texture TexPlayer ./assets/player.png 0 0
+Texture TexLeaf1 ./assets/leaf-1.png 0 0
+Texture TexLeaf2 ./assets/leaf-2.png 0 0
+Texture TexLeaf3 ./assets/leaf-3.png 0 0
+Texture TexLeaf4 ./assets/leaf-4.png 0 0
+Texture TexDirt1 ./assets/dirt-1.png 0 0
+Texture TexDirt2 ./assets/dirt-2.png 0 0
+Texture TexDirt3 ./assets/dirt-3.png 0 0
+Texture TexDirt4 ./assets/dirt-4.png 0 0
+Texture TexDirtBump ./assets/dirt-bump.png 0 0
+Texture TexFenceSide ./assets/fence-side.png 0 0
+Texture TexFenceTop ./assets/fence-top.png 0 0
+Texture TexFlower1 ./assets/flower-1.png 0 0
+Texture TexFlower2 ./assets/flower-2.png 0 0
+Texture TexFlower3 ./assets/flower-3.png 0 0
+Texture TexFlower4 ./assets/flower-4.png 0 0
+Texture TexFlower5 ./assets/flower-5.png 0 0
+Texture TexFlower6 ./assets/flower-6.png 0 0
+Texture TexGrasPatch1 ./assets/grass-patch-1.png 0 0
+Texture TexGrasPatch2 ./assets/grass-patch-2.png 0 0
+Texture TexGrasPatch3 ./assets/grass-patch-3.png 0 0
+Texture TexGrasPatch4 ./assets/grass-patch-4.png 0 0
+Texture TexGrasPatch5 ./assets/grass-patch-5.png 0 0
+Texture TexGrasPatch6 ./assets/grass-patch-6.png 0 0
+Texture TexGrasPatch7 ./assets/grass-patch-7.png 0 0
+Texture TexGrasPatch8 ./assets/grass-patch-8.png 0 0
+Texture TexGrasPatch9 ./assets/grass-patch-9.png 0 0
+Texture TexHouse ./assets/house.png 50 50
+Texture TexLamp ./assets/lamp.png 0 0
+Texture TexMushroom1 ./assets/mushroom-1.png 0 0
+Texture TexMushroom2 ./assets/mushroom-2.png 0 0
+Texture TexRock1 ./assets/rock-1.png 0 0
+Texture TexRock2 ./assets/rock-2.png 0 0
+Texture TexRock3 ./assets/rock-3.png 0 0
+Texture TexRock4 ./assets/rock-4.png 0 0
+Texture TexSign ./assets/sign.png 0 0
+Texture TexStump ./assets/stump.png 0 0
+Texture TexTrail1 ./assets/trail-1.png 0 0
+Texture TexTrail2 ./assets/trail-2.png 0 0
+Texture TexTrail3 ./assets/trail-3.png 0 0
+Texture TexTrail4 ./assets/trail-4.png 0 0
+Texture TexTrail5 ./assets/trail-5.png 0 0
+Texture TexTrail6 ./assets/trail-6.png 0 0
+Texture TexTrail7 ./assets/trail-7.png 0 0
+Texture TexTrail8 ./assets/trail-8.png 0 0
+Texture TexTrail9 ./assets/trail-9.png 0 0
+Texture TexTree1 ./assets/tree-1.png 0 0
+Texture TexTree2 ./assets/tree-2.png 0 0
+Texture TexTree3 ./assets/tree-3.png 0 0
+Texture TexWeed ./assets/weed.png 0 0

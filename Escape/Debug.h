@@ -54,8 +54,15 @@ public:
 
 	void renderBoundingBoxes(SDL_Renderer* renderer, const std::shared_ptr<Entity>& entity)
 	{
+		if (entity->m_boundingBox.x == 0 && entity->m_boundingBox.y == 0)
+		{
+			return;
+		}
+
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_Rect rect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
+		Vec2 entityCenterPoint = { entity->m_position.x + entity->m_half.x, entity->m_position.y + entity->m_half.y };
+		Vec2 boundingBoxPosition = { entityCenterPoint.x - entity->m_boundingBox.x / 2, entityCenterPoint.y - entity->m_boundingBox.y / 2 };
+		SDL_Rect rect = { boundingBoxPosition.x, boundingBoxPosition.y, entity->m_boundingBox.x, entity->m_boundingBox.y };
 		SDL_RenderDrawRect(renderer, &rect);
 	}
 }; 

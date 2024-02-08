@@ -3,7 +3,6 @@
 
 Vec2 Physics::gridToMidPixel(Vec2& position, std::shared_ptr<Entity> entity)
 {
-    // TODO: replace 30 by const for grid size
     float positionX = position.x + entity->m_half.x;
     float positionY = position.y + entity->m_half.y;
     return Vec2(positionX, positionY);
@@ -19,8 +18,10 @@ Vec2 Physics::getOverlap(const Vec2& collideePos, const Vec2& collideeHalf, cons
 bool Physics::isCollision(const std::shared_ptr<Entity>& collidee, const std::shared_ptr<Entity>& collider)
 {   
     Vec2 collideePosition = gridToMidPixel(collidee->m_position, collidee);
+    Vec2 collideePreviousPosition = gridToMidPixel(collidee->m_previousPosition, collidee);
     Vec2 colliderPosition = gridToMidPixel(collider->m_position, collider);
-    Vec2 overlap = getOverlap(collideePosition, collidee->m_half, colliderPosition, collider->m_half);
+    
+    Vec2 overlap = getOverlap(collideePosition, collidee->m_boundingBox / 2, colliderPosition, collider->m_boundingBox / 2);
 
     if (overlap.x > 0 && overlap.y > 0)
     {
@@ -33,41 +34,34 @@ bool Physics::isCollision(const std::shared_ptr<Entity>& collidee, const std::sh
 
 short int Physics::resolveOverlap(const std::shared_ptr<Entity>& collidee, const std::shared_ptr<Entity>& collider)
 {   
-    const Vec2& entityOnePrevPos = collidee->m_previousPosition;
-    const Vec2& entityTwoPos = collider->m_position;
+    Vec2 colliderPosition = gridToMidPixel(collider->m_position, collider);
+    Vec2 collideePreviousPosition = gridToMidPixel(collidee->m_previousPosition, collidee);
+    Vec2 previousOverlap = getOverlap(collideePreviousPosition, collidee->m_boundingBox / 2, colliderPosition, collider->m_boundingBox / 2);
 
-    const Vec2& entityOneHalf = collidee->m_half;
-    const Vec2& entityTwoHalf = collider->m_half;
-
-    auto previousOverlap = getOverlap(entityOnePrevPos, entityOneHalf, entityTwoPos, entityTwoHalf);
-    auto currentOverlap = collidee->m_overlap;
-
-    Vec2& entityOnePosition = collidee->m_position;
-    
-    if (previousOverlap.y > previousOverlap.x)
+    if (previousOverlap.y > 0)
     {
-       if (entityOnePrevPos.x < entityTwoPos.x)
-       {
-           entityOnePosition.x -= currentOverlap.x;
-           return 0;
-       }
-       else
-       {
-           entityOnePosition.x += currentOverlap.x;
-           return 1;
-       }
-    }
-    else
-    {
-        if (entityOnePrevPos.y < entityTwoPos.y)
+        if (collideePreviousPosition.x < colliderPosition.x)
         {
-            entityOnePosition.y -= currentOverlap.y;
-            return 2;
+            //std::cout << "LEFT" << std::endl;
+            collidee->m_position.x -= collidee->m_overlap.x;
         }
         else
         {
-            entityOnePosition.y += currentOverlap.y;
-            return 3;
+            //std::cout << "RIGHT" << std::endl;
+            collidee->m_position.x += collidee->m_overlap.x;
+        }
+    }
+    else if (previousOverlap.x > 0)
+    {
+        if (collideePreviousPosition.y < colliderPosition.y)
+        {
+            //std::cout << "TOP" << std::endl;
+            collidee->m_position.y -= collidee->m_overlap.y;
+        }
+        else
+        {
+            //std::cout << "BOTTOM" << std::endl;
+            collidee->m_position.y += collidee->m_overlap.y;
         }
     }
 
