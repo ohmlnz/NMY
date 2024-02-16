@@ -1,20 +1,20 @@
 #include <SDL.h>
 #include <stdio.h>
-
 #include "Window.h"
 #include "Game.h"
+#include <time.h> 
 
+// TODO: get config from file
 std::string assetsPath = "./assets.txt";
 std::string levelPath = "./level.txt";
 
-Window currentWindow;
-
 int main(int argc, char* args[]) 
 {
-	Game game;
-	game.init(currentWindow.SCREEN_WIDTH, currentWindow.SCREEN_HEIGHT, assetsPath, levelPath);
-	game.run();
+	srand(time(NULL));
 
+	Game game;
+	game.init(SCREEN_WIDTH, SCREEN_HEIGHT, assetsPath, levelPath);
+	game.run();
 	return 0;
 }
 

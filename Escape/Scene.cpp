@@ -2,7 +2,7 @@
 #include "Game.h"
 
 // use regular pointers if needed to increment nb of leaves to get perf boost
-const int MAX_LEAVES = 100;
+const int MAX_LEAVES = 10;
 const int MIN_LEAVES = MAX_LEAVES / 2;
 
 void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPath)
@@ -26,7 +26,8 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 		assetsFile >> assetsTexture >> assetPath >> boundingX >> boundingY;
 		// TODO: add proper error handling - missing textures are not logged 
 		SDL_Texture* texture = IMG_LoadTexture(m_gameEngine->currentRenderer(), assetPath.c_str());
-		m_textures[assetsTexture] = TextureData{ texture, Vec2(boundingX, boundingY) };
+		// TODO: use const window value when available
+		m_textures[assetsTexture] = TextureData{ texture, Vec2(boundingX * 2, boundingY * 2) };
 		std::cout << "The following texture has been loaded: " << assetsTexture << std::endl;
 	}
 
@@ -49,13 +50,16 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 		SDL_Point size = m_entityManager.getTextureSize(m_textures[levelTexture].texture);
 		Vec2 boundingBox = m_textures[levelTexture].boundingBox;
 
-		posX *= m_window.BLOCK_SIZE;
-		posY *= m_window.BLOCK_SIZE;
+		posX *= BLOCK_SIZE;
+		posY *= BLOCK_SIZE;
+		size.x *= 2; // TODO: turn this into window const
+		size.y *= 2;
 
 		// not sure if best way to manage initialization of structs, might wanna look into improving that
 		if (type == "Player")
 		{
-			auto entity = std::make_shared<Playable>(type, levelTexture, Vec2(posX, posY), Vec2(32, 32), Vec2(32, 32));
+			// generateLeaves();
+			auto entity = std::make_shared<Playable>(type, levelTexture, Vec2(posX, posY), Vec2(BLOCK_SIZE, BLOCK_SIZE), Vec2(BLOCK_SIZE * 0.6, BLOCK_SIZE * 0.6));
 			m_entityManager.addEntity(entity);
 			m_player = entity;
 		}
@@ -72,32 +76,42 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	}
 
 	// TODO: not sure if this should be an entity?
-	// auto entity = std::make_shared<Playable>("Blower", "", Vec2(m_player->m_position.x + m_player->m_half.x, m_player->m_position.y + m_player->m_half.y - m_player->m_size.y), Vec2(1, m_player->m_size.y * 2));
-	// m_blower = m_entityManager.addEntity(entity);
-	//generateLeaves();
-	//m_entityManager.update();
-	//m_score = m_entityManager.getEntities("Leaf").size();
+	auto entity = std::make_shared<Playable>("Blower", "", Vec2(m_player->m_position.x + m_player->m_half.x, m_player->m_position.y + m_player->m_half.y - m_player->m_size.y), Vec2(1, m_player->m_size.y * 2), Vec2(1, m_player->m_size.y * 2));
+	 m_entityManager.addEntity(entity);
+	 m_blower = entity;
+	// m_entityManager.update();
+	// m_score = m_entityManager.getEntities("Leaf").size();
 }
 
 void Scene::generateLeaves()
 {
-	int totalLeaves = m_utils.random(MIN_LEAVES, MAX_LEAVES);
+	int totalLeaves = random(MIN_LEAVES, MAX_LEAVES);
 	
 	for (int i = 0; i < totalLeaves; i++)
 	{
-		int randomX = m_utils.random(0, m_window.SCREEN_WIDTH);
-		int randomY = m_utils.random(m_window.BLOCK_SIZE, (m_window.SCREEN_HEIGHT - m_window.BLOCK_SIZE - 10));
-		int leafIndex = m_utils.random(1, 4);
+		int randomX = random(0, SCREEN_WIDTH);
+		int randomY = random(BLOCK_SIZE, (SCREEN_HEIGHT - BLOCK_SIZE - 10));
+		int leafIndex = random(1, 4);
 		std::string textureName = "TexLeaf" + std::to_string(leafIndex);
-		auto entity = std::make_shared<Obstacle>("Leaf", textureName, Vec2(randomX, randomY), Vec2(32, 32), Vec2(32, 32));
-		m_entityManager.addEntity(entity);
+		auto leaf = std::make_shared<Obstacle>("Leaf", textureName, Vec2(randomX, randomY), Vec2(BLOCK_SIZE, BLOCK_SIZE), Vec2(BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5));
+		m_entityManager.addEntity(leaf);
+		m_entityManager.update();
+
+		// remove leaves that are colliding with collidable entities
+		for (auto obstacle : m_entityManager.getEntities("Obstacle"))
+		{
+			if (isCollision(leaf, obstacle))
+			{
+				leaf->destroy();
+			}
+		}
 	}	
 }
 
 void Scene::restartGame()
 {
 	m_score = 0;
-	m_player->m_position = { (m_window.SCREEN_WIDTH / 2) - m_player->m_half.x, (m_window.SCREEN_HEIGHT / 2) - m_player->m_half.y };
+	m_player->m_position = { (SCREEN_WIDTH / 2) - m_player->m_half.x, (SCREEN_HEIGHT / 2) - m_player->m_half.y };
 	generateLeaves();
 	m_entityManager.update();
 	m_score = m_entityManager.getEntities("Leaf").size();
@@ -185,12 +199,12 @@ void Scene::handleTransform()
 	if (m_player->m_up)
 	{
 		position.y -= velocity.y;
-		// m_blower->m_position.y = m_player->m_position.y + m_player->m_half.y - m_player->m_size.y;
+		m_blower->m_position.y = m_player->m_position.y + m_player->m_half.y - m_player->m_size.y;
 	}
 	else if (m_player->m_down)
 	{
 		position.y += velocity.y;
-		// m_blower->m_position.y = m_player->m_position.y + m_player->m_half.y - m_player->m_size.y;
+		m_blower->m_position.y = m_player->m_position.y + m_player->m_half.y - m_player->m_size.y;
 	}	
 
 	// TODO: we may want the blower to be the entity and the spread to be a property of that entity. something to think about.
@@ -198,65 +212,88 @@ void Scene::handleTransform()
 	// TODO: to be refactored
 	const int maxRange = 100;
 
-	// if (m_player->m_direction == "right" || m_player->m_right)
-	// {
-	// 	m_blower->m_position.x += 1;
-	// 
-	// 	if (m_blower->m_position.x - (m_player->m_position.x + m_player->m_size.x) >= maxRange)
-	// 	{
-	// 		m_blower->m_position.x = m_player->m_position.x + m_player->m_half.x;
-	// 	}
-	// }
-	// else if (m_player->m_direction == "left" || m_player->m_left)
-	// {
-	// 	m_blower->m_position.x -= 1;
-	// 
-	// 	if (m_player->m_position.x - m_blower->m_position.x >= maxRange)
-	// 	{
-	// 		m_blower->m_position.x = m_player->m_position.x + m_player->m_half.x;
-	// 	}
-	// }
+	if (m_player->m_direction == "right" || m_player->m_right)
+	{
+		m_blower->m_position.x += 1;
+	
+		if (m_blower->m_position.x - (m_player->m_position.x + m_player->m_size.x) >= maxRange)
+		{
+			m_blower->m_position.x = m_player->m_position.x + m_player->m_half.x;
+		}
+	}
+	else if (m_player->m_direction == "left" || m_player->m_left)
+	{
+		m_blower->m_position.x -= 1;
+	
+		if (m_player->m_position.x - m_blower->m_position.x >= maxRange)
+		{
+			m_blower->m_position.x = m_player->m_position.x + m_player->m_half.x;
+		}
+	}
+
+	// register leaves previous positions
+	for (auto leaf : m_entityManager.getEntities("Leaf"))
+	{
+		Vec2& position = leaf->m_position;
+		leaf->m_previousPosition = position;
+	}
 }
 
 void Scene::handleCollision()
 {
-	// TODO: filter by whats collidable only
-	for (auto entity : m_entityManager.getEntities())
+	for (auto entity : m_entityManager.getEntities())	
 	{
-		// TODO: add a collidable property or create a sub class
-		if (entity->tag() == "Player" || entity->tag() == "Blower" || entity->tag() == "Decoration" || entity->m_boundingBox.x == 0 && entity->m_boundingBox.y == 0)
+		if (entity->tag() == "Obstacle")
 		{
-			continue;
-		}
-
-		if (m_physics.isCollision(m_player, entity))
-		{
-			short int collisionDirection = m_physics.resolveOverlap(m_player, entity);
-		}
-	}
-
-	for (auto entity : m_entityManager.getEntities("Leaf"))
-	{
-		if (m_physics.isCollision(m_blower, entity))
-		{
-			// TODO: add leaf physics to entity?
-			entity->m_position.x += (m_player->m_direction == "right" ? 15 : -15);
-			// randomize angle and use ease-in function so it looks kool.
-			entity->m_angle += 1;
-
-			// if out of bounds
-			if (
-				entity->m_position.x < 0 ||
-				entity->m_position.x > m_window.SCREEN_WIDTH ||
-				entity->m_position.y < 0 ||
-				entity->m_position.y > m_window.SCREEN_HEIGHT
-				)
+			if (isCollision(m_player, entity))
 			{
-				entity->destroy();
-				m_score--;
+				resolveOverlap(m_player, entity);
+			}
+
+			for (auto leaf : m_entityManager.getEntities("Leaf"))
+			{
+				// TODO: refactor using a quadtree for better performance
+				if (isCollision(leaf, entity))
+				{
+					// should bounce off
+					short int direction = resolveOverlap(leaf, entity);
+
+					// this should maybe come from the blower, whose angle should change depending on the surface it hits
+					if (leaf->m_position.y > entity->m_position.y)
+					{
+						leaf->m_position.y += random(1, 5);
+					}
+					else
+					{
+						leaf->m_position.y -= random(1, 5);
+					}
+				}
+			}
+		}
+
+		if (entity->tag() == "Leaf")
+		{
+			if (isCollision(m_blower, entity))
+			{
+				// TODO: add better physics
+				entity->m_position.x += (m_player->m_direction == "right" ? 15 : -15);
+				// randomize angle and use ease-in function so it looks kool.
+				entity->m_angle += 1;
+
+				if (
+					entity->m_position.x < 0 ||
+					entity->m_position.x > SCREEN_WIDTH ||
+					entity->m_position.y < 0 ||
+					entity->m_position.y > SCREEN_HEIGHT
+					)
+				{
+					entity->destroy();
+					m_score--;
+				}
 			}
 		}
 	}
+
 }
 
 void Scene::handleScore()
@@ -271,7 +308,6 @@ void Scene::render()
 {
 	for (auto entity : m_entityManager.getEntities())
 	{
-		// TODO: get block width from const value
 		SDL_Rect entityRect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
 		SDL_RenderCopyEx(
 			m_gameEngine->currentRenderer(),
@@ -302,8 +338,8 @@ void Scene::render()
 	{
 		m_assets.displayText(
 			"You win! Press Y to restart or Q to quit",
-			m_window.SCREEN_WIDTH / 2 - 300,
-			m_window.SCREEN_HEIGHT / 2,
+			SCREEN_WIDTH / 2 - 300,
+			SCREEN_HEIGHT / 2,
 			m_gameEngine->currentRenderer()
 		);
 	}

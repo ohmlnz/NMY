@@ -39,7 +39,6 @@ Decoration TexWeed 5 15
 Decoration TexWeed 13 15
 Decoration TexWeed 24 15
 
-Obstacle TexRock1 2 0
 Obstacle TexRock2 9 4
 Obstacle TexRock3 15 5
 Obstacle TexRock4 6 6
@@ -81,13 +80,13 @@ Obstacle TexTree3 10 13
 Obstacle TexTree2 21 14
 Obstacle TexTree3 26 13
 
-Obstacle TexHouse 10 3
-
 Obstacle TexFenceSide 22 4
 Obstacle TexFenceTop 22 5
 Obstacle TexFenceTop 25 5
 
+Obstacle TexHouse 10 3
 Obstacle TexSign 10 7
+
 Obstacle TexLamp 10 9
 
 Player TexPlayer 15 15

@@ -11,7 +11,6 @@
 class Debug
 {
 private:
-	Window m_window;
 	EntityManager m_entityManager;
 	Assets m_assets;
 
@@ -19,13 +18,11 @@ public:
 	void displayNumberOfLeaves(SDL_Renderer* renderer, int& score)
 	{
 		std::string label = "Nb of leaves: " + std::to_string(score);
-		// m_assets.displayText(label.c_str(), 2 * m_window.BLOCK_SIZE, 2 * m_window.BLOCK_SIZE, renderer);
+		// m_assets.displayText(label.c_str(), 2 * BLOCK_SIZE, 2 * BLOCK_SIZE, renderer);
 	}
 
 	void renderGridMode(SDL_Renderer* renderer)
 	{
-		// TODO: all the values below should be dynamic
-		const int BLOCK_SIZE = 30;
 		for (int i = 0; i < 960 / BLOCK_SIZE; i++)
 		{
 			SDL_RenderDrawLine(
