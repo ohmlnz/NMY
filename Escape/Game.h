@@ -36,7 +36,7 @@ public:
 	void quit();
 
 	void process();
-	void update();
+	void update(float deltaTime);
 	void render();
 
 	SDL_Renderer* currentRenderer();

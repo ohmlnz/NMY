@@ -1,6 +1,7 @@
 #pragma once
 #include "Vec2.h"
 #include <string>
+#include "Animation.h"
 
 // TODO: refactor such that there is one struct per entity type, with a base struct that is common to all of them
 
@@ -10,12 +11,11 @@ private:
 	size_t			m_id = 0;
 	std::string		m_tag = "Default";
 	bool			m_active = true;
-	std::string		m_texture;
 
 public:
-	Entity(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox)
+	Entity(const std::string& tag, Animation animation, Vec2 position, Vec2 size, Vec2 boundingBox)
 		: m_tag(tag)
-		, m_texture(texture)
+		, m_animation(animation)
 		, m_position(position)
 		, m_size(size)
 		, m_half(size.x / 2, size.y / 2)
@@ -26,8 +26,9 @@ public:
 	size_t& id() { return m_id; }
 	void setId(size_t id) { m_id = id; }
 	std::string& tag() { return m_tag; }
-	std::string texture() { return m_texture; }		
+	bool m_flipped = false;
 	double	m_angle = 0;
+	Animation m_animation;
 
 	// transform
 	Vec2 m_position = { 0, 0 };
@@ -46,8 +47,10 @@ public:
 struct Playable : public Entity
 {
 public:
-	Playable(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox) :
-		Entity(tag, texture, position, size, boundingBox) {}
+	Playable(const std::string& tag, Animation animation, Vec2 position, Vec2 size, Vec2 boundingBox, Vec2 velocity) :
+		Entity(tag, animation, position, size, boundingBox),
+		m_velocity(velocity)
+	{}
 	// TODO: initialize at creation
 	Vec2 m_velocity = { 0.2, 0.2 };
 	int  m_cooldown = 1;
@@ -68,18 +71,21 @@ public:
 	std::string m_direction = "right";
 	State m_currentState = State::IDLING;
 	// State m_previousState;
+
+	// flag used to reset position of blower
+	bool m_wasPositionReset = false;
 };
 
 struct Obstacle : public Entity
 {
 public:
-	Obstacle(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox) :
-		Entity(tag, texture, position, size, boundingBox) {}
+	Obstacle(const std::string& tag, Animation animation, Vec2 position, Vec2 size, Vec2 boundingBox) :
+		Entity(tag, animation, position, size, boundingBox) {}
 };
 
 struct Decoration : public Entity
 {
 public:
-	Decoration(const std::string& tag, const std::string& texture, Vec2 position, Vec2 size, Vec2 boundingBox) :
-		Entity(tag, texture, position, size, boundingBox) {}
+	Decoration(const std::string& tag, Animation animation, Vec2 position, Vec2 size, Vec2 boundingBox) :
+		Entity(tag, animation, position, size, boundingBox) {}
 };

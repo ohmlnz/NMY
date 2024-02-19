@@ -10,13 +10,15 @@
 #include "Assets.h"
 #include "Utils.h"
 #include "Math.h"
+#include "Animation.h"
 
 class Scene
 {
 private:
-	class Game* m_gameEngine = nullptr;
-	std::map<std::string, TextureData> m_textures;
-	EntityManager m_entityManager;
+	class Game*										m_gameEngine = nullptr;
+	std::map<std::string, TextureData>				m_textures;
+	std::map<std::string, Animation>				m_animations;
+	EntityManager									m_entityManager;
 	std::shared_ptr<Playable>						m_player;
 	std::shared_ptr<Playable>						m_blower;
 	Debug											m_debug;
@@ -31,11 +33,11 @@ public:
 	void generateLeaves();
 	void restartGame();
 
-	void update();
+	void update(float deltaTime);
 	void render();
 
 	void handleEvents(SDL_Event event);
-	void handleTransform();
+	void handleTransform(float deltaTime);
 	void handleCollision();
 	void handleScore();
 };

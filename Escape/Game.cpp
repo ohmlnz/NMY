@@ -29,10 +29,25 @@ void Game::init(int width, int height, const std::string& assetsPath, const std:
 
 void Game::run()
 {
+	const int FRAME_PER_SEC = 60;
+	const float MS_PER_UPDATE = 1000.0f / FRAME_PER_SEC;
+	Uint32 ticksCount = 0;
+
 	while (m_isRunning)
 	{
 		process();
-		update();
+
+		while (!SDL_TICKS_PASSED(SDL_GetTicks(), ticksCount + MS_PER_UPDATE));
+
+		float deltaTime = (SDL_GetTicks() - ticksCount) / 1000.0f;
+
+		if (deltaTime > 0.05f)
+		{
+			deltaTime = 0.05f;
+		}
+
+		update(deltaTime);
+
 		render();
 	}
 }
@@ -54,9 +69,9 @@ void Game::process()
 	}
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
-	m_scene->update();
+	m_scene->update(deltaTime);
 }
 
 void Game::render()
