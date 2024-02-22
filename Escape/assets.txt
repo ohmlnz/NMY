@@ -1,4 +1,5 @@
-Texture TexPlayer ./assets/player.png 0 0
+Texture TexStand ./assets/stand.png 0 0
+Texture TexRun ./assets/run.png 0 0
 Texture TexLeaf1 ./assets/leaf-1.png 0 0
 Texture TexLeaf2 ./assets/leaf-2.png 0 0
 Texture TexLeaf3 ./assets/leaf-3.png 0 0
@@ -48,7 +49,8 @@ Texture TexTree1 ./assets/tree-1.png 70 70
 Texture TexTree2 ./assets/tree-2.png 20 50
 Texture TexTree3 ./assets/tree-3.png 70 70
 Texture TexWeed ./assets/weed.png 0 0
-Animation Player TexPlayer 1 0
+Animation Stand TexStand 1 0
+Animation Run   TexRun 2 10
 Animation Leaf1 TexLeaf1 1 0
 Animation Leaf2 TexLeaf2 1 0
 Animation Leaf3 TexLeaf3 1 0

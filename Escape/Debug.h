@@ -7,7 +7,6 @@
 #include "EntityManager.h"
 #include "Assets.h"
 
-// TODO: complement with imGUI?  
 class Debug
 {
 private:

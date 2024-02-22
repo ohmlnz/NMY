@@ -1,47 +1,45 @@
 #include "Scene.h"
 #include "Game.h"
 
-// use regular pointers if needed to increment nb of leaves to get perf boost
-const int MAX_LEAVES = 10;
-const int MIN_LEAVES = MAX_LEAVES / 2;
-
 void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPath)
 {
 	m_assets.initFont();
 
 	std::ifstream assetsFile(assetsPath);
-	
-	// TODO: use struct
-	std::string category, assetsTexture, assetPath;
-	int boundingX, boundingY;
-	
-	std::string animationName, textureName;
-	int frames, speed;
+	std::string category;
 
-	// TODO: use an asset manager to handle all that crap
 	if (!assetsFile)
 	{
-		std::cerr << "The assets file could not be opened at path: " << assetsPath << std::endl;
+		std::cerr << "The assets file could not be opened at path: " << assetsPath << "\n";
 	}
 
 	while (assetsFile >> category)
 	{
 		if (category == "Texture")
 		{
-			assetsFile >> assetsTexture >> assetPath >> boundingX >> boundingY;
+			AssetData asset;
+			assetsFile >> asset.texture >> asset.path >> asset.boundingX >> asset.boundingY;
 			// TODO: add proper error handling - missing textures are not logged 
-			SDL_Texture* texture = IMG_LoadTexture(m_gameEngine->currentRenderer(), assetPath.c_str());
+			SDL_Texture* texture = IMG_LoadTexture(m_gameEngine->currentRenderer(), asset.path.c_str());
 			// TODO: use const window value when available
-			m_textures[assetsTexture] = TextureData{ texture, Vec2(boundingX * 2, boundingY * 2) };
-			std::cout << "The following texture has been loaded: " << assetsTexture << std::endl;
+			// TODO: link bounding box attribute to animation data?
+			m_textures[asset.texture] = TextureData{ texture, Vec2(asset.boundingX * 2, asset.boundingY * 2) };
+			std::cout << "The following texture has been loaded: " << asset.texture << "\n";
 		}
 
 		if (category == "Animation")
 		{
-			assetsFile >> animationName >> textureName >> frames >> speed;
-			SDL_Point size = m_entityManager.getTextureSize(m_textures[textureName].texture);
-			m_animations[animationName] = Animation{ animationName, m_textures[textureName].texture, Vec2(size.x * 2, size.y * 2), frames, speed };
-			std::cout << "The following animation has been loaded: " << animationName << std::endl;
+			AnimationData animation;
+			assetsFile >> animation.name >> animation.textureName >> animation.frames >> animation.speed;
+			SDL_Point size = m_entityManager.getTextureSize(m_textures[animation.textureName].texture);
+			m_animations[animation.name] = Animation {
+				animation.name,
+				m_textures[animation.textureName].texture,
+				Vec2(size.x * 2, size.y * 2) / animation.frames,
+				animation.frames,
+				animation.speed
+			};
+			std::cout << "The following animation has been loaded: " << animation.name << "\n";
 		}
 	}
 
@@ -49,75 +47,69 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	m_entityManager = EntityManager();
 
 	std::ifstream levelFile(levelPath);
-	std::string type, levelTexture;
-	int posX, posY;
+	std::string type;
 
 	if (!levelFile)
 	{
-		std::cerr << "The level file could not be opened at path: " << levelPath << std::endl;
+		std::cerr << "The level file could not be opened at path: " << levelPath << "\n";
 	}
 
 	while (levelFile >> type)
 	{
-		levelFile >> levelTexture >> posX >> posY;
+		LevelData level;
+		levelFile >> level.texture >> level.posX >> level.posY;
 
-		Vec2 boundingBox = m_textures["Tex" + levelTexture].boundingBox;
+		Vec2 boundingBox = m_textures["Tex" + level.texture].boundingBox;
 
-		posX *= BLOCK_SIZE;
-		posY *= BLOCK_SIZE;
+		level.posX *= BLOCK_SIZE;
+		level.posY *= BLOCK_SIZE;
 
-		// not sure if best way to manage initialization of structs, might wanna look into improving that
 		if (type == "Player")
 		{
-			// generateLeaves();
-			auto entity = std::make_shared<Playable>(
+			generateLeaves();
+			std::shared_ptr entity = std::make_shared<Playable>(
 				type,
-				m_animations[levelTexture],
-				Vec2(posX, posY),
-				Vec2(BLOCK_SIZE, BLOCK_SIZE), 
+				m_animations[level.texture],
+				Vec2(level.posX, level.posY),
 				Vec2(BLOCK_SIZE, BLOCK_SIZE),
-				Vec2(3, 3)
+				Vec2(BLOCK_SIZE, BLOCK_SIZE),
+				Vec2(200, 200)
 			);
 			m_entityManager.addEntity(entity);
 			m_player = entity;
 		}
 		else if (type == "Obstacle")
 		{
-			auto entity = std::make_shared<Obstacle>(
+			m_entityManager.addEntity(std::make_shared<Obstacle>(
 				type,
-				m_animations[levelTexture],
-				Vec2(posX, posY),
-				m_animations[levelTexture].size(),
-				m_textures["Tex" + levelTexture].boundingBox
-			);
-			m_entityManager.addEntity(entity);
+				m_animations[level.texture],
+				Vec2(level.posX, level.posY),
+				m_animations[level.texture].size(),
+				m_textures["Tex" + level.texture].boundingBox
+			));
 		}
 		else
 		{
-			auto entity = std::make_shared<Decoration>(
+			m_entityManager.addEntity(std::make_shared<Decoration>(
 				type,
-				m_animations[levelTexture],
-				Vec2(posX, posY),
-				m_animations[levelTexture].size(),
-				boundingBox
-			);
-			m_entityManager.addEntity(entity);
+				m_animations[level.texture],
+				Vec2(level.posX, level.posY),
+				m_animations[level.texture].size(),
+				m_textures["Tex" + level.texture].boundingBox
+			));
 		}
 	}
 
-	// TODO: not sure if this should be an entity?
-	auto entity = std::make_shared<Playable>(
+	std::shared_ptr entity = std::make_shared<Playable>(
 		"Blower",
 		m_animations[""],
 		Vec2(m_player->m_position.x + m_player->m_half.x, m_player->m_position.y + m_player->m_half.y - m_player->m_size.y),
 		Vec2(1, m_player->m_size.y * 2),
 		Vec2(1, m_player->m_size.y * 2),
-		Vec2(10,10)
+		Vec2(500,500)
 	);
 	 m_entityManager.addEntity(entity);
 	 m_blower = entity;
-	// m_entityManager.update();
-	// m_score = m_entityManager.getEntities("Leaf").size();
 }
 
 void Scene::generateLeaves()
@@ -129,8 +121,8 @@ void Scene::generateLeaves()
 		int randomX = random(0, SCREEN_WIDTH);
 		int randomY = random(BLOCK_SIZE, (SCREEN_HEIGHT - BLOCK_SIZE - 10));
 		int leafIndex = random(1, 4);
-		std::string textureName = "TexLeaf" + std::to_string(leafIndex);
-		auto leaf = std::make_shared<Obstacle>(
+		std::string textureName = "Leaf" + std::to_string(leafIndex);
+		std::shared_ptr leaf = std::make_shared<Obstacle>(
 			"Leaf",
 			m_animations[textureName],
 			Vec2(randomX, randomY),
@@ -141,7 +133,7 @@ void Scene::generateLeaves()
 		m_entityManager.update();
 
 		// remove leaves that are colliding with collidable entities
-		for (auto obstacle : m_entityManager.getEntities("Obstacle"))
+		for (std::shared_ptr obstacle : m_entityManager.getEntities("Obstacle"))
 		{
 			if (isCollision(leaf, obstacle))
 			{
@@ -157,13 +149,14 @@ void Scene::restartGame()
 	m_player->m_position = { (SCREEN_WIDTH / 2) - m_player->m_half.x, (SCREEN_HEIGHT / 2) - m_player->m_half.y };
 	generateLeaves();
 	m_entityManager.update();
-	m_score = m_entityManager.getEntities("Leaf").size();
 	m_gameover = false;
 }
 
 void Scene::update(float deltaTime)
 {
 	m_entityManager.update();
+	handleState();
+	handleAnimation();
 	handleTransform(deltaTime);
 	handleCollision();
 	handleScore();
@@ -198,6 +191,8 @@ void Scene::handleEvents(SDL_Event event)
 					{
 						m_blower->m_wasPositionReset = true;
 					}
+
+					m_player->m_currentState = State::MOVING;
 					break;
 				case SDLK_LEFT:
 					m_player->m_left = true;
@@ -209,12 +204,16 @@ void Scene::handleEvents(SDL_Event event)
 					{
 						m_blower->m_wasPositionReset = true;
 					}
+
+					m_player->m_currentState = State::MOVING;
 					break;
 				case SDLK_UP:
 					m_player->m_up = true;
+					m_player->m_currentState = State::MOVING;
 					break;
 				case SDLK_DOWN:
 					m_player->m_down = true;
+					m_player->m_currentState = State::MOVING;
 					break;
 			}
 			break;
@@ -223,18 +222,50 @@ void Scene::handleEvents(SDL_Event event)
 			{
 				case SDLK_RIGHT:
 					m_player->m_right = false;
+					m_player->m_currentState = State::IDLING;
 					break;
 				case SDLK_LEFT:
 					m_player->m_left = false;
+					m_player->m_currentState = State::IDLING;
 					break;
 				case SDLK_UP:
 					m_player->m_up = false;
+					m_player->m_currentState = State::IDLING;
 					break;
 				case SDLK_DOWN:
 					m_player->m_down = false;
+					m_player->m_currentState = State::IDLING;
 				break;
 			}
-		break;
+			break;
+	}
+}
+
+void Scene::handleState()
+{
+	switch (m_player->m_currentState)
+	{
+		case State::IDLING:
+			if (m_player->m_animation.name() != "Stand")
+			{
+				m_player->m_animation = m_animations["Stand"];
+			}
+			break;
+
+		case State::MOVING:
+			if (m_player->m_animation.name() != "Run")
+			{
+				m_player->m_animation = m_animations["Run"];
+			}
+			break;
+	}
+}
+
+void Scene::handleAnimation()
+{
+	for (std::shared_ptr entity : m_entityManager.getEntities())
+	{
+		entity->m_animation.update();
 	}
 }
 
@@ -279,13 +310,12 @@ void Scene::handleTransform(float deltaTime)
 	// TODO: we may want the blower to be the entity and the spread to be a property of that entity. something to think about.
 	// TODO: use const values
 	// TODO: to be refactored
-	const int maxRange = 100;
 
 	if (m_player->m_direction == "right")
 	{
 		m_blower->m_position.x += m_blower->m_velocity.x * deltaTime;
 	
-		if (m_blower->m_position.x - (m_player->m_position.x + m_player->m_size.x) >= maxRange)
+		if (m_blower->m_position.x - (m_player->m_position.x + m_player->m_size.x) >= MAX_BLOWER_RANGE)
 		{
 			m_blower->m_position.x = (m_player->m_position.x + m_player->m_half.x);
 		}
@@ -294,14 +324,14 @@ void Scene::handleTransform(float deltaTime)
 	{
 		m_blower->m_position.x -= m_blower->m_velocity.x * deltaTime;
 	
-		if (m_player->m_position.x - m_blower->m_position.x >= maxRange)
+		if (m_player->m_position.x - m_blower->m_position.x >= MAX_BLOWER_RANGE)
 		{
 			m_blower->m_position.x = (m_player->m_position.x + m_player->m_half.x);
 		}
 	}
 
 	// register leaves previous positions
-	for (auto leaf : m_entityManager.getEntities("Leaf"))
+	for (std::shared_ptr leaf : m_entityManager.getEntities("Leaf"))
 	{
 		Vec2& position = leaf->m_position;
 		leaf->m_previousPosition = position;
@@ -310,7 +340,7 @@ void Scene::handleTransform(float deltaTime)
 
 void Scene::handleCollision()
 {
-	for (auto entity : m_entityManager.getEntities())	
+	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{
 		if (entity->tag() == "Obstacle")
 		{
@@ -319,13 +349,13 @@ void Scene::handleCollision()
 				resolveOverlap(m_player, entity);
 			}
 
-			for (auto leaf : m_entityManager.getEntities("Leaf"))
+			for (std::shared_ptr leaf : m_entityManager.getEntities("Leaf"))
 			{
 				// TODO: refactor using a quadtree for better performance
 				if (isCollision(leaf, entity))
 				{
 					// should bounce off
-					short int direction = resolveOverlap(leaf, entity);
+					int direction = resolveOverlap(leaf, entity);
 
 					// TODO: this should come from the blower, whose angle should change depending on the surface it hits
 					leaf->m_position.y += random(1, 5);
@@ -368,13 +398,15 @@ void Scene::handleScore()
 
 void Scene::render()
 {
-	for (auto entity : m_entityManager.getEntities())
+	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{
-		SDL_Rect entityRect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
+		const SDL_Rect& sprite = entity->m_animation.sprite();
+		const SDL_Rect entityRect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
+		
 		SDL_RenderCopyEx(
 			m_gameEngine->currentRenderer(),
 			entity->m_animation.texture(),
-			NULL,
+			SDL_RectEmpty(&sprite) ? NULL : &sprite,
 			&entityRect,
 			entity->m_angle,
 			NULL,

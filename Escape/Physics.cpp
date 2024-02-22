@@ -32,12 +32,11 @@ bool isCollision(const std::shared_ptr<Entity>& collidee, const std::shared_ptr<
     return false;
 }
 
-short int resolveOverlap(const std::shared_ptr<Entity>& collidee, const std::shared_ptr<Entity>& collider)
+int resolveOverlap(const std::shared_ptr<Entity>& collidee, const std::shared_ptr<Entity>& collider)
 {
     Vec2 colliderPosition = gridToMidPixel(collider->m_position, collider);
     Vec2 collideePreviousPosition = gridToMidPixel(collidee->m_previousPosition, collidee);
     Vec2 previousOverlap = getOverlap(collideePreviousPosition, collidee->m_boundingBox / 2, colliderPosition, collider->m_boundingBox / 2);
-    std::cout << previousOverlap.y << std::endl;
 
     if (previousOverlap.y > 0)
     {

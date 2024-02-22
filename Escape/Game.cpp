@@ -29,8 +29,8 @@ void Game::init(int width, int height, const std::string& assetsPath, const std:
 
 void Game::run()
 {
-	const int FRAME_PER_SEC = 60;
-	const float MS_PER_UPDATE = 1000.0f / FRAME_PER_SEC;
+	constexpr int FRAME_PER_SEC = 60;
+	constexpr float MS_PER_UPDATE = 1000.0f / FRAME_PER_SEC;
 	Uint32 ticksCount = 0;
 
 	while (m_isRunning)
@@ -45,6 +45,8 @@ void Game::run()
 		{
 			deltaTime = 0.05f;
 		}
+
+		ticksCount = SDL_GetTicks();
 
 		update(deltaTime);
 

@@ -37,4 +37,9 @@ public:
 		SDL_DestroyTexture(texture);
 		SDL_FreeSurface(surface);
 	}
+
+	// TODO: abstract texture logic over here
+	// void addTexture();
+
+	
 };

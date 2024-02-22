@@ -14,10 +14,13 @@ private:
 	SDL_Texture* m_texture = nullptr;
 	Vec2 m_size = { 0, 0 };
 	std::string m_name = "Default";
+	SDL_Rect m_sprite;
 public:
 	Animation();
 	Animation(const std::string& animationName, SDL_Texture* texture, Vec2 size, int frame, int speed);
 	void update();
 	SDL_Texture* texture();
 	const Vec2& size();
+	const SDL_Rect& sprite();
+	const std::string& name();
 };

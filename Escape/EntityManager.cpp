@@ -11,7 +11,7 @@ void EntityManager::update()
 
 void EntityManager::pushEntities()
 {
-	for (auto& entity : m_entitiesToAdd)
+	for (std::shared_ptr entity : m_entitiesToAdd)
 	{
 		m_entities.push_back(entity);
 		m_entitiesMap[entity->tag()].push_back(entity);

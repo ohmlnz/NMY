@@ -1,9 +1,13 @@
 #pragma once
-#include "Vec2.h"
 #include <string>
+
+#include "Vec2.h"
 #include "Animation.h"
 
-// TODO: refactor such that there is one struct per entity type, with a base struct that is common to all of them
+enum State {
+	IDLING,
+	MOVING,
+};
 
 struct Entity
 {
@@ -54,12 +58,6 @@ public:
 	// TODO: initialize at creation
 	Vec2 m_velocity = { 0.2, 0.2 };
 	int  m_cooldown = 1;
-
-	// state
-	enum State {
-		IDLING,
-		MOVING,
-	};
 
 	// TODO: maybe better for this to be an enum? 
 	bool m_up = false;
