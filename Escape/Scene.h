@@ -13,7 +13,7 @@
 #include "Math.h"
 #include "Animation.h"
 
-constexpr int MAX_LEAVES = 10;
+constexpr int MAX_LEAVES = 30;
 constexpr int MIN_LEAVES = MAX_LEAVES / 2;
 constexpr int MAX_BLOWER_RANGE = 100;
 

@@ -49,6 +49,7 @@ Texture TexTree1 ./assets/tree-1.png 70 70
 Texture TexTree2 ./assets/tree-2.png 20 50
 Texture TexTree3 ./assets/tree-3.png 70 70
 Texture TexWeed ./assets/weed.png 0 0
+Texture TexSmoke ./assets/smoke.png 0 0
 Animation Stand TexStand 1 0
 Animation Run   TexRun 2 10
 Animation Leaf1 TexLeaf1 1 0
@@ -100,3 +101,4 @@ Animation Tree1 TexTree1 1 0
 Animation Tree2 TexTree2 1 0
 Animation Tree3 TexTree3 1 0
 Animation Weed TexWeed 1 0
+Animation Smoke TexSmoke 14 10

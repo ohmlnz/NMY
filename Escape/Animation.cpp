@@ -23,8 +23,8 @@ void Animation::update()
 			m_currentFrame = (m_currentFrame + 1) % m_maxFrame;
 			m_currentTime = 0;
 		}
-	
-		m_sprite = { static_cast<int>((m_currentFrame) * (m_size.x / m_maxFrame)), 0, static_cast<int>(m_size.y), static_cast<int>(m_size.y) };
+
+		m_sprite = { static_cast<int>((m_currentFrame) * (m_size.x / m_maxFrame)), 0, static_cast<int>(m_size.x / m_maxFrame), static_cast<int>(m_size.y) };
 	}
 };
 

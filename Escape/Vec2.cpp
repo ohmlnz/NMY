@@ -63,6 +63,6 @@ double Vec2::length()
 
 float Vec2::normalize()
 {
-	// TODO
+	// TODO: can be used to ensure diagonal movements are performed at the same speed as perpendicular ones
 	return 0;
 };

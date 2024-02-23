@@ -32,10 +32,10 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 			AnimationData animation;
 			assetsFile >> animation.name >> animation.textureName >> animation.frames >> animation.speed;
 			SDL_Point size = m_entityManager.getTextureSize(m_textures[animation.textureName].texture);
-			m_animations[animation.name] = Animation {
+			m_animations[animation.name] = Animation{
 				animation.name,
 				m_textures[animation.textureName].texture,
-				Vec2(size.x * 2, size.y * 2) / animation.frames,
+				Vec2(size.x, size.y),
 				animation.frames,
 				animation.speed
 			};
@@ -63,6 +63,8 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 
 		level.posX *= BLOCK_SIZE;
 		level.posY *= BLOCK_SIZE;
+		// TODO: use const window value when available
+		Vec2 textureSize = { m_animations[level.texture].size().x * 2, m_animations[level.texture].size().y * 2 };
 
 		if (type == "Player")
 		{
@@ -84,7 +86,7 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 				type,
 				m_animations[level.texture],
 				Vec2(level.posX, level.posY),
-				m_animations[level.texture].size(),
+				textureSize,
 				m_textures["Tex" + level.texture].boundingBox
 			));
 		}
@@ -94,7 +96,7 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 				type,
 				m_animations[level.texture],
 				Vec2(level.posX, level.posY),
-				m_animations[level.texture].size(),
+				textureSize,
 				m_textures["Tex" + level.texture].boundingBox
 			));
 		}
@@ -400,9 +402,9 @@ void Scene::render()
 {
 	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{
-		const SDL_Rect& sprite = entity->m_animation.sprite();
-		const SDL_Rect entityRect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
-		
+		auto& sprite = entity->m_animation.sprite();
+		SDL_Rect entityRect = { entity->m_position.x, entity->m_position.y, entity->m_size.x, entity->m_size.y };
+
 		SDL_RenderCopyEx(
 			m_gameEngine->currentRenderer(),
 			entity->m_animation.texture(),
