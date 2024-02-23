@@ -193,8 +193,6 @@ void Scene::handleEvents(SDL_Event event)
 					{
 						m_blower->m_wasPositionReset = true;
 					}
-
-					m_player->m_currentState = State::MOVING;
 					break;
 				case SDLK_LEFT:
 					m_player->m_left = true;
@@ -206,16 +204,12 @@ void Scene::handleEvents(SDL_Event event)
 					{
 						m_blower->m_wasPositionReset = true;
 					}
-
-					m_player->m_currentState = State::MOVING;
 					break;
 				case SDLK_UP:
 					m_player->m_up = true;
-					m_player->m_currentState = State::MOVING;
 					break;
 				case SDLK_DOWN:
 					m_player->m_down = true;
-					m_player->m_currentState = State::MOVING;
 					break;
 			}
 			break;
@@ -224,19 +218,15 @@ void Scene::handleEvents(SDL_Event event)
 			{
 				case SDLK_RIGHT:
 					m_player->m_right = false;
-					m_player->m_currentState = State::IDLING;
 					break;
 				case SDLK_LEFT:
 					m_player->m_left = false;
-					m_player->m_currentState = State::IDLING;
 					break;
 				case SDLK_UP:
 					m_player->m_up = false;
-					m_player->m_currentState = State::IDLING;
 					break;
 				case SDLK_DOWN:
 					m_player->m_down = false;
-					m_player->m_currentState = State::IDLING;
 				break;
 			}
 			break;
@@ -245,6 +235,16 @@ void Scene::handleEvents(SDL_Event event)
 
 void Scene::handleState()
 {
+	if (!m_player->m_right && !m_player->m_left && !m_player->m_up && !m_player->m_down)
+	{
+		m_player->m_currentState = State::IDLING;
+	}
+
+	if (m_player->m_right || m_player->m_left || m_player->m_up || m_player->m_down)
+	{
+		m_player->m_currentState = State::MOVING;
+	}
+
 	switch (m_player->m_currentState)
 	{
 		case State::IDLING:

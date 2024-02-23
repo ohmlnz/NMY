@@ -29,7 +29,7 @@ struct AnimationData {
 
 struct LevelData {
 	std::string texture;
-	int posX, posY;
+	float posX, posY;
 };
 
 class Scene
