@@ -16,12 +16,12 @@ private:
 	const int m_DEFAULT_FONT_SIZE = 30;
 
 public:
-
+	const std::string assetsPath = "./assets.txt";
+	const std::string levelPath = "./level.txt";
 	void initFont()
 	{
 		m_font = TTF_OpenFont("./arial.ttf", m_DEFAULT_FONT_SIZE);
 	}
-
 	void displayText(const char* text, int x, int y, SDL_Renderer* renderer)
 	{
 		SDL_Surface* surface = TTF_RenderText_Solid(m_font, text, m_color);
@@ -37,9 +37,6 @@ public:
 		SDL_DestroyTexture(texture);
 		SDL_FreeSurface(surface);
 	}
-
 	// TODO: abstract texture logic over here
-	// void addTexture();
-
-	
+	// void addTexture()
 };

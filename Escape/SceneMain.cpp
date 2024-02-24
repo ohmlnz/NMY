@@ -1,16 +1,16 @@
-#include "Scene.h"
+#include "SceneMain.h"
 #include "Game.h"
 
-void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPath)
+void SceneMain::loadLevel()
 {
 	m_assets.initFont();
 
-	std::ifstream assetsFile(assetsPath);
+	std::ifstream assetsFile(m_assets.assetsPath);
 	std::string category;
 
 	if (!assetsFile)
 	{
-		std::cerr << "The assets file could not be opened at path: " << assetsPath << "\n";
+		std::cerr << "The assets file could not be opened at path: " << m_assets.assetsPath << "\n";
 	}
 
 	while (assetsFile >> category)
@@ -46,12 +46,12 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	// resets the entity manager
 	m_entityManager = EntityManager();
 
-	std::ifstream levelFile(levelPath);
+	std::ifstream levelFile(m_assets.levelPath);
 	std::string type;
 
 	if (!levelFile)
 	{
-		std::cerr << "The level file could not be opened at path: " << levelPath << "\n";
+		std::cerr << "The level file could not be opened at path: " << m_assets.levelPath << "\n";
 	}
 
 	while (levelFile >> type)
@@ -74,8 +74,8 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 				m_animations[level.texture],
 				Vec2(level.posX, level.posY),
 				Vec2(BLOCK_SIZE, BLOCK_SIZE),
-				Vec2(BLOCK_SIZE, BLOCK_SIZE),
-				Vec2(200, 200)
+				Vec2(0.8 * BLOCK_SIZE, 0.8 * BLOCK_SIZE),
+				Vec2(300, 300)
 			);
 			m_entityManager.addEntity(entity);
 			m_player = entity;
@@ -114,7 +114,7 @@ void Scene::loadLevel(const std::string& assetsPath, const std::string& levelPat
 	 m_blower = entity;
 }
 
-void Scene::generateLeaves()
+void SceneMain::generateLeaves()
 {
 	int totalLeaves = random(MIN_LEAVES, MAX_LEAVES);
 	
@@ -145,7 +145,7 @@ void Scene::generateLeaves()
 	}	
 }
 
-void Scene::restartGame()
+void SceneMain::restartGame()
 {
 	m_score = 0;
 	m_player->m_position = { (SCREEN_WIDTH / 2) - m_player->m_half.x, (SCREEN_HEIGHT / 2) - m_player->m_half.y };
@@ -154,7 +154,7 @@ void Scene::restartGame()
 	m_gameover = false;
 }
 
-void Scene::update(float deltaTime)
+void SceneMain::update(float deltaTime)
 {
 	m_entityManager.update();
 	handleState();
@@ -164,7 +164,7 @@ void Scene::update(float deltaTime)
 	handleScore();
 }
 
-void Scene::handleEvents(SDL_Event event)
+void SceneMain::process(SDL_Event event)
 {
 	switch (event.type)
 	{
@@ -233,7 +233,7 @@ void Scene::handleEvents(SDL_Event event)
 	}
 }
 
-void Scene::handleState()
+void SceneMain::handleState()
 {
 	if (!m_player->m_right && !m_player->m_left && !m_player->m_up && !m_player->m_down)
 	{
@@ -263,7 +263,7 @@ void Scene::handleState()
 	}
 }
 
-void Scene::handleAnimation()
+void SceneMain::handleAnimation()
 {
 	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{
@@ -271,7 +271,7 @@ void Scene::handleAnimation()
 	}
 }
 
-void Scene::handleTransform(float deltaTime)
+void SceneMain::handleTransform(float deltaTime)
 {
 	Vec2& position = m_player->m_position;
 	Vec2& velocity = m_player->m_velocity;
@@ -340,7 +340,7 @@ void Scene::handleTransform(float deltaTime)
 	}
 }
 
-void Scene::handleCollision()
+void SceneMain::handleCollision()
 {
 	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{
@@ -390,7 +390,7 @@ void Scene::handleCollision()
 
 }
 
-void Scene::handleScore()
+void SceneMain::handleScore()
 {
 	if (m_score <= 0)
 	{
@@ -398,7 +398,7 @@ void Scene::handleScore()
 	}
 }
 
-void Scene::render()
+void SceneMain::render()
 {
 	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{

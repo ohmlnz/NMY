@@ -85,6 +85,5 @@ Obstacle FenceTop 22 5
 Obstacle FenceTop 25 5
 
 Obstacle House 10 3
-Decoration Smoke 8 3
-
 Player Stand 15 15
+Decoration Smoke 8 3

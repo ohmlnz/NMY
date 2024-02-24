@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
@@ -13,6 +14,8 @@
 
 #include "Physics.h"
 #include "Scene.h"
+#include "SceneMain.h"
+#include "SceneMenu.h"
 
 struct Mouse {
 	float x;
@@ -28,11 +31,12 @@ private:
 	bool											m_isRunning		=	 false;
 	Mouse											m_mouse			=	 { 0, 0 };
 	int												m_currentFrame	=	 0;
-	std::shared_ptr<Scene>							m_scene;
+	std::string										m_currentScene	=	 "Menu";
+	std::map<std::string, std::shared_ptr<Scene>>	m_scenes;
 	Assets m_assets;
 
 public:
-	void init(int width, int height, const std::string& assetsPath, const std::string& levelPath);
+	void init(int width, int height);
 	void run();
 	void quit();
 
@@ -42,4 +46,5 @@ public:
 
 	SDL_Renderer* currentRenderer();
 	std::shared_ptr<Scene> currentScene();
+	void changeScene(const std::string& name, std::shared_ptr<Scene> scene);
 };

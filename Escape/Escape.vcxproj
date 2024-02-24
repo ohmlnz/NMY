@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Libraries\SDL2-2.28.3\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Libraries\SDL2_image-2.6.3\include;C:\Libraries\SDL2_ttf-2.20.2\include</IncludePath>
-    <LibraryPath>C:\Libraries\SDL2-2.28.3\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Libraries\SDL2_image-2.6.3\lib\x64;C:\Libraries\SDL2_ttf-2.20.2\lib\x64</LibraryPath>
+    <IncludePath>C:\Libraries\SDL2-2.28.3\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Libraries\SDL2_image-2.6.3\include;C:\Libraries\SDL2_ttf-2.20.2\include;C:\Libraries\freeglut\include</IncludePath>
+    <LibraryPath>C:\Libraries\SDL2-2.28.3\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Libraries\SDL2_image-2.6.3\lib\x64;C:\Libraries\SDL2_ttf-2.20.2\lib\x64;C:\Libraries\freeglut\lib\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\Libraries\SDL2-2.28.3\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Libraries\SDL2_image-2.6.3\lib\x64;C:\Libraries\SDL2_ttf-2.20.2\lib\x64</LibraryPath>
-    <IncludePath>C:\Libraries\SDL2-2.28.3\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Libraries\SDL2_image-2.6.3\include;C:\Libraries\SDL2_ttf-2.20.2\include</IncludePath>
+    <LibraryPath>C:\Libraries\SDL2-2.28.3\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Libraries\SDL2_image-2.6.3\lib\x64;C:\Libraries\SDL2_ttf-2.20.2\lib\x64;C:\Libraries\freeglut\lib\x64</LibraryPath>
+    <IncludePath>C:\Libraries\SDL2-2.28.3\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Libraries\SDL2_image-2.6.3\include;C:\Libraries\SDL2_ttf-2.20.2\include;C:\Libraries\freeglut\include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -118,7 +118,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>SDL2.lib;SDL2main.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;OpenGL32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,7 +136,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;OpenGL32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -145,7 +145,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneMain.cpp" />
+    <ClCompile Include="SceneMenucpp.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -158,7 +159,9 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="SceneMain.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneMenu.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />

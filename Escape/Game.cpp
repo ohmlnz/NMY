@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Assets.h"
 
-void Game::init(int width, int height, const std::string& assetsPath, const std::string& levelPath)
+void Game::init(int width, int height)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
@@ -23,8 +23,7 @@ void Game::init(int width, int height, const std::string& assetsPath, const std:
 	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 	m_isRunning = true;
 
-	m_scene = std::make_shared<Scene>(this);
-	m_scene->loadLevel(assetsPath, levelPath);
+	changeScene("Menu", std::make_shared<SceneMenu>(this));
 }
 
 void Game::run()
@@ -67,20 +66,20 @@ void Game::process()
 				break;
 		}
 
-		m_scene->handleEvents(m_event);
+		currentScene()->process(m_event);
 	}
 }
 
 void Game::update(float deltaTime)
 {
-	m_scene->update(deltaTime);
+	currentScene()->update(deltaTime);
 }
 
 void Game::render()
 {
 	SDL_SetRenderDrawColor(m_renderer, 135, 159, 41, 255);
 	SDL_RenderClear(m_renderer);
-	m_scene->render();
+	currentScene()->render();
 	SDL_RenderPresent(m_renderer);
 }
 
@@ -100,5 +99,11 @@ SDL_Renderer* Game::currentRenderer()
 
 std::shared_ptr<Scene> Game::currentScene()
 {
-	return m_scene;
+	return m_scenes[m_currentScene];
+}
+
+void Game::changeScene(const std::string& name, std::shared_ptr<Scene> scene)
+{
+	m_scenes[name] = scene;
+	m_currentScene = name;
 }
