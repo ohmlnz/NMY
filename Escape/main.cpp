@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "Game.h"
+#include "GameEngine.h"
 #include "Window.h"
 
 int main(int argc, char* args[]) 
 {
 	srand(time(NULL));
 
-	Game game;
+    GameEngine game;
 	game.init(SCREEN_WIDTH, SCREEN_HEIGHT);
 	game.run();
 

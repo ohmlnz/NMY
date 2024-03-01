@@ -33,7 +33,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="GameEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EntityManager.cpp">
@@ -57,18 +57,21 @@
     <ClCompile Include="SceneMain.cpp">
       <Filter>Source Files\Views</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMenucpp.cpp">
+    <ClCompile Include="SceneMenu.cpp">
       <Filter>Source Files\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="GameEngine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Assets.h">
+    <ClInclude Include="Text.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
@@ -81,9 +84,6 @@
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Vec2.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
@@ -101,11 +101,14 @@
     <ClInclude Include="SceneMenu.h">
       <Filter>Source Files\Views</Filter>
     </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="config.txt">
-      <Filter>Config</Filter>
-    </Text>
     <Text Include="level.txt">
       <Filter>Config</Filter>
     </Text>
@@ -114,15 +117,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="player.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="ground.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="exit.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="assets\dirt-1.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -277,6 +271,7 @@
   <ItemGroup>
     <None Include="SDL2_ttf.dll" />
     <None Include="assets\map.aseprite" />
+    <None Include="freeglut.dll" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="arial.ttf" />

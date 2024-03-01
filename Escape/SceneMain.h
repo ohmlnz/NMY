@@ -9,14 +9,22 @@
 #include "Physics.h"
 #include "Window.h"
 #include "Debug.h"
-#include "Assets.h"
 #include "Utils.h"
 #include "Math.h"
 #include "Animation.h"
+#include "Math.h"
 
-constexpr int MAX_LEAVES = 30;
-constexpr int MIN_LEAVES = MAX_LEAVES / 2;
-constexpr int MAX_BLOWER_RANGE = 100;
+const int MAX_LEAVES = 10'000;
+const int MIN_LEAVES = MAX_LEAVES / 2;
+const int MAX_BLOWER_RANGE = 100;
+const std::string ASSETS_PATH = "./assets.txt";
+const std::string LEVEL_PATH = "./level.txt";
+
+struct TextureData
+{
+	SDL_Texture* texture;
+	Vec2 boundingBox;
+};
 
 struct AssetData {
 	std::string texture, path;
@@ -42,9 +50,11 @@ private:
 	std::shared_ptr<Playable>						m_blower;
 	bool											m_debugMode = false;
 	int												m_score		= 0;
+	int												m_leaves;
 	bool											m_gameover  = false;
+	float											m_fps;
 public:
-	SceneMain(class Game* gameEngine) : Scene(gameEngine)
+	SceneMain(class GameEngine* gameEngine) : Scene(gameEngine)
 	{
 		loadLevel();
 	}
@@ -60,6 +70,6 @@ public:
 	void handleState();
 	void handleAnimation();
 	void handleTransform(float deltaTime);
-	void handleCollision();
+	void handleCollision(float deltaTime);
 	void handleScore();
 };

@@ -5,13 +5,11 @@
 #include "Entity.h"
 #include "Window.h"
 #include "EntityManager.h"
-#include "Assets.h"
 
 class Debug
 {
 private:
 	EntityManager m_entityManager;
-	Assets m_assets;
 
 public:
 	void displayNumberOfLeaves(SDL_Renderer* renderer, int& score)

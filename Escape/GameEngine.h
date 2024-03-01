@@ -22,7 +22,7 @@ struct Mouse {
 	float y;
 };
 
-class Game
+class GameEngine
 {
 private:
 	SDL_Window*										m_window		=	 nullptr;
@@ -31,9 +31,9 @@ private:
 	bool											m_isRunning		=	 false;
 	Mouse											m_mouse			=	 { 0, 0 };
 	int												m_currentFrame	=	 0;
-	std::string										m_currentScene	=	 "Menu";
+	std::string										m_currentScene	=	 "Main";
 	std::map<std::string, std::shared_ptr<Scene>>	m_scenes;
-	Assets m_assets;
+	Text text;
 
 public:
 	void init(int width, int height);
@@ -46,5 +46,6 @@ public:
 
 	SDL_Renderer* currentRenderer();
 	std::shared_ptr<Scene> currentScene();
+	SDL_Window* currentWindow();
 	void changeScene(const std::string& name, std::shared_ptr<Scene> scene);
 };

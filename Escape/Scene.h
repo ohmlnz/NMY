@@ -3,18 +3,21 @@
 
 #include "EntityManager.h"
 #include "Debug.h"
-#include "Assets.h"
+#include "Text.h"
 
 class Scene
 {
 protected:
-	class Game*										m_gameEngine = nullptr;
+	class GameEngine*								m_gameEngine = nullptr;
 	EntityManager									m_entityManager;
 	Debug											m_debug;
-	Assets											m_assets;
+	Text											m_text;
 
 public:
-	Scene(class Game* gameEngine) : m_gameEngine(gameEngine) {}
+	Scene(class GameEngine* gameEngine) : m_gameEngine(gameEngine)
+	{
+		m_text.initFonts();
+	}
 
 	virtual void process(SDL_Event event) = 0;
 	virtual void update(float deltaTime) = 0;

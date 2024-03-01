@@ -1,9 +1,0 @@
-Leafy Blowy
-
-the map randomly generates two backyards, adjacent to one another.
-leafs are randomly dropped on either side. again randomly. however the number of entities
-is equal on both sides. 
-
-the goal of each player is to try to blow the leafs on the other side of their respective backyard. 
-
-the game ends when the timer is up. 

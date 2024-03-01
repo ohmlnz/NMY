@@ -37,17 +37,20 @@ int resolveOverlap(const std::shared_ptr<Entity>& collidee, const std::shared_pt
     Vec2 colliderPosition = gridToMidPixel(collider->m_position, collider);
     Vec2 collideePreviousPosition = gridToMidPixel(collidee->m_previousPosition, collidee);
     Vec2 previousOverlap = getOverlap(collideePreviousPosition, collidee->m_boundingBox / 2, colliderPosition, collider->m_boundingBox / 2);
-
+    
+    Vec2& collideePosition = collidee->m_position;
+    Vec2& collideeOverlap = collidee->m_overlap;
+    
     if (previousOverlap.y > 0)
     {
         if (collideePreviousPosition.x < colliderPosition.x)
         {
-            collidee->m_position.x -= collidee->m_overlap.x;
+            collideePosition.x -= collideeOverlap.x;
             return 1;
         }
         else
         {
-            collidee->m_position.x += collidee->m_overlap.x;
+            collideePosition.x += collideeOverlap.x;
             return 2;
         }
     }
@@ -55,12 +58,12 @@ int resolveOverlap(const std::shared_ptr<Entity>& collidee, const std::shared_pt
     {
         if (collideePreviousPosition.y < colliderPosition.y)
         {
-            collidee->m_position.y -= collidee->m_overlap.y;
+            collideePosition.y -= collideeOverlap.y;
             return 3;
         }
         else
         {
-            collidee->m_position.y += collidee->m_overlap.y;
+            collideePosition.y += collideeOverlap.y;
             return 4;
         }
     }

@@ -1,16 +1,14 @@
 #include "SceneMain.h"
-#include "Game.h"
+#include "GameEngine.h"
 
 void SceneMain::loadLevel()
 {
-	m_assets.initFont();
-
-	std::ifstream assetsFile(m_assets.assetsPath);
+	std::ifstream assetsFile(ASSETS_PATH);
 	std::string category;
 
 	if (!assetsFile)
 	{
-		std::cerr << "The assets file could not be opened at path: " << m_assets.assetsPath << "\n";
+		std::cerr << "The assets file could not be opened at path: " << ASSETS_PATH << "\n";
 	}
 
 	while (assetsFile >> category)
@@ -46,12 +44,12 @@ void SceneMain::loadLevel()
 	// resets the entity manager
 	m_entityManager = EntityManager();
 
-	std::ifstream levelFile(m_assets.levelPath);
+	std::ifstream levelFile(LEVEL_PATH);
 	std::string type;
 
 	if (!levelFile)
 	{
-		std::cerr << "The level file could not be opened at path: " << m_assets.levelPath << "\n";
+		std::cerr << "The level file could not be opened at path: " << LEVEL_PATH << "\n";
 	}
 
 	while (levelFile >> type)
@@ -117,7 +115,8 @@ void SceneMain::loadLevel()
 void SceneMain::generateLeaves()
 {
 	int totalLeaves = random(MIN_LEAVES, MAX_LEAVES);
-	
+	m_leaves = totalLeaves;
+
 	for (int i = 0; i < totalLeaves; i++)
 	{
 		int randomX = random(0, SCREEN_WIDTH);
@@ -140,6 +139,7 @@ void SceneMain::generateLeaves()
 			if (isCollision(leaf, obstacle))
 			{
 				leaf->destroy();
+				m_leaves--;
 			}
 		}
 	}	
@@ -156,11 +156,12 @@ void SceneMain::restartGame()
 
 void SceneMain::update(float deltaTime)
 {
+	m_fps = deltaTime;
 	m_entityManager.update();
 	handleState();
 	handleAnimation();
 	handleTransform(deltaTime);
-	handleCollision();
+	handleCollision(deltaTime);
 	handleScore();
 }
 
@@ -340,7 +341,7 @@ void SceneMain::handleTransform(float deltaTime)
 	}
 }
 
-void SceneMain::handleCollision()
+void SceneMain::handleCollision(float deltaTime)
 {
 	for (std::shared_ptr entity : m_entityManager.getEntities())
 	{
@@ -382,7 +383,7 @@ void SceneMain::handleCollision()
 					)
 				{
 					entity->destroy();
-					m_score--;
+					m_leaves--;
 				}
 			}
 		}
@@ -416,15 +417,22 @@ void SceneMain::render()
 		);
 
 
-		if (m_debugMode)
-		{
-			m_debug.renderBoundingBoxes(m_gameEngine->currentRenderer(), entity);
-		}
+		//if (m_debugMode)
+		//{
+		//	m_debug.renderBoundingBoxes(m_gameEngine->currentRenderer(), entity);
+		//}
 
 	}
 
+	// debug info
 	if (m_debugMode)
 	{
+		std::string displayLeaves = "Number of leaves: " + std::to_string(m_leaves);
+		m_text.displayText(displayLeaves.c_str(), 50, 50, m_gameEngine->currentRenderer());
+
+		std::string displayFPS = "Frames per seconds: " + std::to_string(static_cast <int>(1000 / (m_fps * 1000)));
+
+		m_text.displayText(displayFPS.c_str(), 50, 80, m_gameEngine->currentRenderer());
 		// m_debug.displayNumberOfLeaves(m_gameEngine->currentRenderer(), m_score);
 		// m_debug.renderGridMode(m_gameEngine->currentRenderer());
 		// 
@@ -432,11 +440,11 @@ void SceneMain::render()
 
 	if (m_gameover)
 	{
-		m_assets.displayText(
-			"You win! Press Y to restart or Q to quit",
-			SCREEN_WIDTH / 2 - 300,
-			SCREEN_HEIGHT / 2,
-			m_gameEngine->currentRenderer()
-		);
+		// m_text->displayText(
+		// 	"You win! Press Y to restart or Q to quit",
+		// 	SCREEN_WIDTH / 2 - 300,
+		// 	SCREEN_HEIGHT / 2,
+		// 	m_gameEngine->currentRenderer()
+		// );
 	}
 }

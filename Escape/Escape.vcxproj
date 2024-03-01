@@ -142,22 +142,24 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="SceneMain.cpp" />
-    <ClCompile Include="SceneMenucpp.cpp" />
+    <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="Assets.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="Scene.h" />
@@ -168,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets.txt" />
-    <Text Include="config.txt" />
     <Text Include="level.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -222,12 +223,10 @@
     <Image Include="assets\tree-2.png" />
     <Image Include="assets\tree-3.png" />
     <Image Include="assets\weed.png" />
-    <Image Include="exit.png" />
-    <Image Include="ground.png" />
-    <Image Include="player.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\map.aseprite" />
+    <None Include="freeglut.dll" />
     <None Include="SDL2_ttf.dll" />
   </ItemGroup>
   <ItemGroup>

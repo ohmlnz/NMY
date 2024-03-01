@@ -1,17 +1,20 @@
 #pragma once
 #include "Scene.h"
-#include <iostream>
+#include "GameEngine.h"
+
+const int MAX_INDEX = 2;
 
 class SceneMenu : public Scene
 {
+private:
+	int m_menuIndex = 0;
+	const char* m_menuItems[3] = { "Play", "Settings", "Quit" };
 public:
-	SceneMenu(class Game* gameEngine) : Scene(gameEngine)
-	{
-		// init
-		std::cout << "menu screen" << std::endl;
-	}
+	SceneMenu(class GameEngine* gameEngine) : Scene(gameEngine) {}
 
 	void process(SDL_Event event);
 	void update(float deltaTime);
 	void render();
+
+	void updateMenu(int newIndex);
 };
