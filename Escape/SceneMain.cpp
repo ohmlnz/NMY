@@ -102,11 +102,12 @@ void SceneMain::loadLevel()
 
 	std::shared_ptr entity = std::make_shared<Playable>(
 		"Blower",
-		m_animations[""],
-		Vec2(m_player->m_position.x + m_player->m_half.x, m_player->m_position.y + m_player->m_half.y - m_player->m_size.y),
+		m_animations["Wind"],
+		// TODO: position + half should bring to center not far end, this is related to the way entites are scaled
+		Vec2(m_player->m_position.x + m_player->m_half.x, m_player->m_position.y),
+		Vec2(BLOCK_SIZE, BLOCK_SIZE),
 		Vec2(1, m_player->m_size.y * 2),
-		Vec2(1, m_player->m_size.y * 2),
-		Vec2(500,500)
+		Vec2(400,400)
 	);
 	 m_entityManager.addEntity(entity);
 	 m_blower = entity;
@@ -274,62 +275,63 @@ void SceneMain::handleAnimation()
 
 void SceneMain::handleTransform(float deltaTime)
 {
-	Vec2& position = m_player->m_position;
-	Vec2& velocity = m_player->m_velocity;
-	m_player->m_previousPosition = position;
+	Vec2& playerPosition = m_player->m_position;
+	Vec2& playerVelocity = m_player->m_velocity;
+	Vec2& playerHalf = m_player->m_half;
+	m_player->m_previousPosition = playerPosition;
+
+	Vec2& blowerPosition = m_blower->m_position;
+	Vec2& blowerVelocity = m_blower->m_velocity;
+	bool& blowerPositionReset = m_blower->m_wasPositionReset;
 
 	if (m_player->m_right)
 	{
-		position.x += velocity.x * deltaTime;
+		playerPosition.x += playerVelocity.x * deltaTime;
 
-		if (m_blower->m_wasPositionReset)
+		if (blowerPositionReset)
 		{
-			m_blower->m_position.x = (m_player->m_position.x + m_player->m_half.x);
-			m_blower->m_wasPositionReset = false;
+			blowerPosition.x = (playerPosition.x + playerHalf.x);
+			blowerPositionReset = false;
 		}
 	}
 	else if (m_player->m_left)
 	{
-		position.x -= velocity.x * deltaTime;
+		playerPosition.x -= playerVelocity.x * deltaTime;
 
-		if (m_blower->m_wasPositionReset)
+		if (blowerPositionReset)
 		{
-			m_blower->m_position.x = (m_player->m_position.x + m_player->m_half.x);
-			m_blower->m_wasPositionReset = false;
+			blowerPosition.x = (playerPosition.x - playerHalf.x);
+			blowerPositionReset = false;
 		}
 	}
 
 	if (m_player->m_up)
 	{
-		position.y -= velocity.y * deltaTime;
-		m_blower->m_position.y = (m_player->m_position.y + m_player->m_half.y - m_player->m_size.y);
+		playerPosition.y -= playerVelocity.y * deltaTime;
+		blowerPosition.y = playerPosition.y;
 	}
 	else if (m_player->m_down)
 	{
-		position.y += velocity.y * deltaTime;
-		m_blower->m_position.y = (m_player->m_position.y + m_player->m_half.y - m_player->m_size.y);
+		playerPosition.y += playerVelocity.y * deltaTime;
+		blowerPosition.y = playerPosition.y;
 	}	
-
-	// TODO: we may want the blower to be the entity and the spread to be a property of that entity. something to think about.
-	// TODO: use const values
-	// TODO: to be refactored
 
 	if (m_player->m_direction == "right")
 	{
-		m_blower->m_position.x += m_blower->m_velocity.x * deltaTime;
+		blowerPosition.x += blowerVelocity.x * deltaTime;
 	
-		if (m_blower->m_position.x - (m_player->m_position.x + m_player->m_size.x) >= MAX_BLOWER_RANGE)
+		if (blowerPosition.x - (playerPosition.x + playerHalf.x) >= MAX_BLOWER_RANGE)
 		{
-			m_blower->m_position.x = (m_player->m_position.x + m_player->m_half.x);
+			blowerPosition.x = playerPosition.x + playerHalf.x;
 		}
 	}
 	else if (m_player->m_direction == "left")
 	{
-		m_blower->m_position.x -= m_blower->m_velocity.x * deltaTime;
+		blowerPosition.x -= blowerVelocity.x * deltaTime;
 	
-		if (m_player->m_position.x - m_blower->m_position.x >= MAX_BLOWER_RANGE)
+		if ((playerPosition.x - playerHalf.x) - blowerPosition.x >= MAX_BLOWER_RANGE)
 		{
-			m_blower->m_position.x = (m_player->m_position.x + m_player->m_half.x);
+			blowerPosition.x = playerPosition.x - playerHalf.x;
 		}
 	}
 
@@ -417,10 +419,10 @@ void SceneMain::render()
 		);
 
 
-		//if (m_debugMode)
-		//{
-		//	m_debug.renderBoundingBoxes(m_gameEngine->currentRenderer(), entity);
-		//}
+		if (m_debugMode)
+		{
+			m_debug.renderBoundingBoxes(m_gameEngine->currentRenderer(), entity);
+		}
 
 	}
 
@@ -431,11 +433,10 @@ void SceneMain::render()
 		m_text.displayText(displayLeaves.c_str(), 50, 50, m_gameEngine->currentRenderer());
 
 		std::string displayFPS = "Frames per seconds: " + std::to_string(static_cast <int>(1000 / (m_fps * 1000)));
-
 		m_text.displayText(displayFPS.c_str(), 50, 80, m_gameEngine->currentRenderer());
+
 		// m_debug.displayNumberOfLeaves(m_gameEngine->currentRenderer(), m_score);
-		// m_debug.renderGridMode(m_gameEngine->currentRenderer());
-		// 
+		// m_debug.renderGridMode(m_gameEngine->currentRenderer()); 
 	}
 
 	if (m_gameover)
