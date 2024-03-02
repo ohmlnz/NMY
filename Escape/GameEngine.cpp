@@ -27,7 +27,7 @@ void GameEngine::init(int width, int height)
 	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 	m_isRunning = true;
 
-	changeScene("Main", std::make_shared<SceneMain>(this));
+	changeScene("Menu", std::make_shared<SceneMenu>(this));
 }
 
 void GameEngine::run()

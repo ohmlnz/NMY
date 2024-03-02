@@ -31,7 +31,7 @@ private:
 	bool											m_isRunning		=	 false;
 	Mouse											m_mouse			=	 { 0, 0 };
 	int												m_currentFrame	=	 0;
-	std::string										m_currentScene	=	 "Main";
+	std::string										m_currentScene	=	 "Menu";
 	std::map<std::string, std::shared_ptr<Scene>>	m_scenes;
 	Text text;
 

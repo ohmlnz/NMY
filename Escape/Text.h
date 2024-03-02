@@ -6,7 +6,6 @@ class Text
 {
 private:
 	TTF_Font* m_font;
-	SDL_Color m_color = { 0, 0, 0 };
 	SDL_Texture* m_texture;
 	const int m_DEFAULT_FONT_SIZE = 30;
 
@@ -27,9 +26,9 @@ public:
 		}
 	}
 
-	void displayText(const char* text, int x, int y, SDL_Renderer* renderer)
+	void displayText(const char* text, int x, int y, SDL_Renderer* renderer, SDL_Color color = { 0, 0, 0 })
 	{
-		SDL_Surface* surface = TTF_RenderUTF8_Solid(m_font, text, m_color);
+		SDL_Surface* surface = TTF_RenderUTF8_Solid(m_font, text, color);
 		SDL_Rect area = { x, y, surface->w, surface->h };
 		m_texture = SDL_CreateTextureFromSurface(renderer, surface);
 		SDL_RenderCopy(renderer, m_texture, NULL, &area);
