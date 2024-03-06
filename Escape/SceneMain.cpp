@@ -3,6 +3,9 @@
 
 void SceneMain::loadLevel()
 {
+	m_startTime = std::chrono::steady_clock::now();
+
+	// TODO: move this to Assets class
 	std::ifstream assetsFile(ASSETS_PATH);
 	std::string category;
 
@@ -158,12 +161,20 @@ void SceneMain::restartGame()
 void SceneMain::update(float deltaTime)
 {
 	m_fps = deltaTime;
-	m_entityManager.update();
-	handleState();
-	handleAnimation();
-	handleTransform(deltaTime);
-	handleCollision(deltaTime);
-	handleScore();
+
+	if (!m_gameover)
+	{
+		m_entityManager.update();
+		handleState();
+		handleAnimation();
+		handleTransform(deltaTime);
+		handleCollision(deltaTime);
+		handleScore();
+	}
+
+	std::chrono::steady_clock::time_point elapsed = std::chrono::steady_clock::now();
+	std::chrono::duration<double> time = std::chrono::duration_cast<std::chrono::duration<double>>(elapsed - m_startTime);
+	m_currentTime = static_cast<int>(time.count());
 }
 
 void SceneMain::process(SDL_Event event)
@@ -372,15 +383,13 @@ void SceneMain::handleCollision(float deltaTime)
 		{
 			if (isCollision(m_blower, entity))
 			{
-				// TODO: add better physics
 				entity->m_position.x += (m_player->m_direction == "right" ? 15 : -15);
-				// randomize angle and use ease-in function so it looks kool.
 				entity->m_angle += 1;
 
 				if (
-					entity->m_position.x < 0 ||
+					entity->m_position.x + entity->m_size.x <= 2 ||
 					entity->m_position.x > SCREEN_WIDTH ||
-					entity->m_position.y < 0 ||
+					entity->m_position.y + entity->m_size.y <= 2 ||
 					entity->m_position.y > SCREEN_HEIGHT
 					)
 				{
@@ -395,9 +404,18 @@ void SceneMain::handleCollision(float deltaTime)
 
 void SceneMain::handleScore()
 {
-	if (m_score <= 0)
+	const int ceiling = 500;
+
+	if (m_leaves <= 0 && !m_gameover)
 	{
-		// m_gameover = true;
+		m_score = ceiling - m_currentTime;
+
+		if (m_score < 0)
+		{
+			m_score = 0;
+		}
+
+		m_gameover = true;
 	}
 }
 
@@ -426,26 +444,27 @@ void SceneMain::render()
 
 	}
 
-	// debug info
 	if (m_debugMode)
 	{
-		std::string displayLeaves = "Number of leaves: " + std::to_string(m_leaves);
+		std::string displayTime = "Time: " + std::to_string(m_currentTime) + " seconds";
+		m_text.displayText(displayTime.c_str(), 50, 20, m_gameEngine->currentRenderer());
+
+		std::string displayLeaves = "Remaining leaves: " + std::to_string(m_leaves);
 		m_text.displayText(displayLeaves.c_str(), 50, 50, m_gameEngine->currentRenderer());
 
 		std::string displayFPS = "Frames per seconds: " + std::to_string(static_cast <int>(1000 / (m_fps * 1000)));
 		m_text.displayText(displayFPS.c_str(), 50, 80, m_gameEngine->currentRenderer());
-
-		// m_debug.displayNumberOfLeaves(m_gameEngine->currentRenderer(), m_score);
-		// m_debug.renderGridMode(m_gameEngine->currentRenderer()); 
 	}
 
 	if (m_gameover)
 	{
-		// m_text->displayText(
-		// 	"You win! Press Y to restart or Q to quit",
-		// 	SCREEN_WIDTH / 2 - 300,
-		// 	SCREEN_HEIGHT / 2,
-		// 	m_gameEngine->currentRenderer()
-		// );
+		m_text.displayText(
+			"No more leaves! Press Y to restart or Q to quit",
+			SCREEN_WIDTH / 2 - 450,
+			SCREEN_HEIGHT / 2,
+			m_gameEngine->currentRenderer(),
+			SDL_Color{255,255,255},
+			50
+		);
 	}
 }

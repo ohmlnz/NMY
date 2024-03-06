@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <chrono>
 
 #include "Scene.h"
 #include "EntityManager.h"
@@ -14,7 +15,7 @@
 #include "Animation.h"
 #include "Math.h"
 
-const int MAX_LEAVES = 50;
+const int MAX_LEAVES = 10;
 const int MIN_LEAVES = MAX_LEAVES / 2;
 const int MAX_BLOWER_RANGE = 100;
 const std::string ASSETS_PATH = "./assets.txt";
@@ -49,10 +50,13 @@ private:
 	std::shared_ptr<Playable>						m_player;
 	std::shared_ptr<Playable>						m_blower;
 	bool											m_debugMode = true;
-	int												m_score		= 0;
+	double											m_score;
 	int												m_leaves;
 	bool											m_gameover  = false;
 	float											m_fps;
+	std::chrono::steady_clock::time_point			m_startTime;
+	int												m_currentTime;
+
 public:
 	SceneMain(class GameEngine* gameEngine) : Scene(gameEngine)
 	{

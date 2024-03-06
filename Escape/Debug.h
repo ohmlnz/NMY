@@ -12,12 +12,6 @@ private:
 	EntityManager m_entityManager;
 
 public:
-	void displayNumberOfLeaves(SDL_Renderer* renderer, int& score)
-	{
-		std::string label = "Nb of leaves: " + std::to_string(score);
-		// m_assets.displayText(label.c_str(), 2 * BLOCK_SIZE, 2 * BLOCK_SIZE, renderer);
-	}
-
 	void renderGridMode(SDL_Renderer* renderer)
 	{
 		for (int i = 0; i < 960 / BLOCK_SIZE; i++)

@@ -15,6 +15,4 @@ public:
 	void process(SDL_Event event);
 	void update(float deltaTime);
 	void render();
-
-	void updateMenu(int newIndex);
 };
