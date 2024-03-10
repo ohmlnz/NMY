@@ -8,7 +8,7 @@ void GameEngine::init(int width, int height)
 		exit(1);
 	}
 
-	m_window = SDL_CreateWindow("Not In My Yard!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
+	m_window = SDL_CreateWindow("Not In My Yard!!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
 	
 	if (m_window == NULL)
 	{

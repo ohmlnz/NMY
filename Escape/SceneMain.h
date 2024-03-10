@@ -49,7 +49,7 @@ private:
 	std::map<std::string, Animation>				m_animations;
 	std::shared_ptr<Playable>						m_player;
 	std::shared_ptr<Playable>						m_blower;
-	bool											m_debugMode = true;
+	bool											m_debugMode = false;
 	double											m_score;
 	int												m_leaves;
 	bool											m_gameover  = false;

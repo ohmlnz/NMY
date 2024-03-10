@@ -14,10 +14,7 @@ protected:
 	Text											m_text;
 
 public:
-	Scene(class GameEngine* gameEngine) : m_gameEngine(gameEngine)
-	{
-		m_text.initFonts();
-	}
+	Scene(class GameEngine* gameEngine) : m_gameEngine(gameEngine) {}
 
 	virtual void process(SDL_Event event) = 0;
 	virtual void update(float deltaTime) = 0;

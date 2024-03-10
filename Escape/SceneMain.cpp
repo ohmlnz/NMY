@@ -446,25 +446,25 @@ void SceneMain::render()
 
 	if (m_debugMode)
 	{
-		std::string displayTime = "Time: " + std::to_string(m_currentTime) + " seconds";
-		m_text.displayText(displayTime.c_str(), 50, 20, m_gameEngine->currentRenderer());
+		std::string time = "Time: " + std::to_string(m_currentTime) + " seconds";
+		m_text.display(time.c_str(), 50, 20, m_gameEngine->currentRenderer());
 
-		std::string displayLeaves = "Remaining leaves: " + std::to_string(m_leaves);
-		m_text.displayText(displayLeaves.c_str(), 50, 50, m_gameEngine->currentRenderer());
+		std::string leaves = "Remaining leaves: " + std::to_string(m_leaves);
+		m_text.display(leaves.c_str(), 50, 50, m_gameEngine->currentRenderer());
 
-		std::string displayFPS = "Frames per seconds: " + std::to_string(static_cast <int>(1000 / (m_fps * 1000)));
-		m_text.displayText(displayFPS.c_str(), 50, 80, m_gameEngine->currentRenderer());
+		std::string FPS = "Frames per seconds: " + std::to_string(static_cast <int>(1000 / (m_fps * 1000)));
+		m_text.display(FPS.c_str(), 50, 80, m_gameEngine->currentRenderer());
 	}
 
 	if (m_gameover)
 	{
-		m_text.displayText(
-			"No more leaves! Press Y to restart or Q to quit",
-			SCREEN_WIDTH / 2 - 450,
-			SCREEN_HEIGHT / 2,
-			m_gameEngine->currentRenderer(),
-			SDL_Color{255,255,255},
-			50
-		);
+		// m_text.displayText(
+		// 	"No more leaves! Press Y to restart or Q to quit",
+		// 	SCREEN_WIDTH / 2 - 450,
+		// 	SCREEN_HEIGHT / 2,
+		// 	m_gameEngine->currentRenderer(),
+		// 	SDL_Color{255,255,255},
+		// 	50
+		// );
 	}
 }

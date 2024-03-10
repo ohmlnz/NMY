@@ -86,7 +86,7 @@ Obstacle FenceTop 24 6
 
 Obstacle House 10 3
 Obstacle Sign 10 7
-Player Stand 15 15
+Player Stand 15 6
 Obstacle Lamp 10 10
 
 Decoration Smoke 8 3

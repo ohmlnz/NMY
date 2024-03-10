@@ -2,25 +2,9 @@
 
 void SceneMenu::process(SDL_Event event)
 {
-	switch (event.type)
+	if (event.type == SDL_KEYDOWN)
 	{
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym)
-			{
-			case SDLK_RETURN:
-				if (m_menuIndex == 0)
-				{
-					m_gameEngine->changeScene("Main", std::make_shared<SceneMain>(m_gameEngine));
-				}
-				break;
-			case SDLK_UP:
-				m_menuIndex--;
-				break;
-			case SDLK_DOWN:
-				m_menuIndex++;
-				break;
-			}
-		break;
+		m_gameEngine->changeScene("Main", std::make_shared<SceneMain>(m_gameEngine));
 	}
 };
 
@@ -38,11 +22,28 @@ void SceneMenu::update(float deltaTime)
 
 void SceneMenu::render()
 {
-	for (int i = 0; i <= MAX_INDEX; i++)
-	{
-		bool isSelected = i == m_menuIndex;
-		SDL_Color red = { 255, 0, 0 };
-		SDL_Color white = { 0, 0, 0 };
-		m_text.displayText(m_menuItems[i], 50, 20 * i * 5, m_gameEngine->currentRenderer(), isSelected ? red : white);
-	}
+	SDL_Color whiteGray = { 255, 247, 247 };
+
+	m_text.setFont("luckiest");
+	TTF_Font* currentFont = m_text.getFont();
+	TTF_SetFontSize(currentFont, 100);
+
+	m_text.display(
+		"Not In My Yard!!",
+		(SCREEN_WIDTH / 2) - 320,
+		(SCREEN_HEIGHT / 2) - 150,
+		m_gameEngine->currentRenderer(),
+		whiteGray
+	);
+
+	TTF_SetFontSize(currentFont, 30);
+
+	m_text.display(
+		"Press any key to start",
+		(SCREEN_WIDTH / 2) - 100,
+		(SCREEN_HEIGHT / 2) - 30,
+		m_gameEngine->currentRenderer(),
+		whiteGray
+	);
+	
 };
