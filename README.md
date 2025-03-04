@@ -1,7 +1,9 @@
 # Not In My Yard!!
 
 ## Overview
-"Not In My Yard!!" is a 2D game developed using SDL (Simple DirectMedia Layer) and OpenGL. The game involves various game elements such as a player, obstacles, decorations, and animations. The game engine handles the initialization, running, and quitting of the game, while different scenes manage the game states, such as the main menu and the main game scene.
+"Not In My Yard!!" is a 2D game developed using SDL (Simple DirectMedia Layer) and C++. The game involves various game elements such as a player, obstacles, decorations, and animations. The goal is to blow all the leaves that randomly appear on the screen as quickly as possible. The game engine handles the initialization, running, and quitting of the game, while different scenes manage the game states, such as the main menu and the main game scene.
+
+![nmy-gameplay-opti](https://github.com/user-attachments/assets/83eb6b64-4335-4c74-87ed-0b367b42b369)
 
 ## Project Structure
 The project is organized into several key components:
