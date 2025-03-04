@@ -12,6 +12,7 @@ The project is organized into several key components:
 - **Physics**: Handles collision detection and resolution. Implemented in [`Physics.cpp`](Physics.cpp) and [`Physics.h`](Physics.h).
 - **Animations**: Manages sprite animations for game entities. Implemented in [`Animation.cpp`](Animation.cpp) and [`Animation.h`](Animation.h).
 - **Utilities**: Provides helper functions like random number generation. Implemented in [`Utils.cpp`](Utils.cpp) and [`Utils.h`](Utils.h).
+- **Debug**: Provides tools for debugging the game, such as logging and visual debug information. Implemented in [`Debug.cpp`](Debug.cpp) and [`Debug.h`](Debug.h).
 
 ## Assets
 The game uses various assets such as textures and fonts, which are organized in the `assets` directory. The assets are listed and loaded directly from [`assets.txt`](assets.txt).
